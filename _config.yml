@@ -11,4 +11,4 @@ exclude:
   - build_release.sh
   - deploy.sh
   - less.sh
-  - new_post.sh
+  - post.sh
