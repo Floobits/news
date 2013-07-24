@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+{% include head.html %}
+<body>
+<div id="wrapper">
+{% include header.html %}
+<div class="post-header">
+<div class="post-title">{{ page.title }}</div>
+<hr />
+<div class="post-date">{{ page.date | date_to_string }}</div>
+</div>
+<div class="post">
+{{ content }}
+</div>
+<hr />
+<div class="nav">
+{% if page.previous %}
+<a class="nav-left" href="{{ page.previous.url }}">&larr;&nbsp;{{ page.previous.title }}</a>
+{% endif %}
+{% if page.next %}
+<a class="nav-right" href="{{ page.next.url }}">{{ page.next.title }}&nbsp;&rarr;</a>
+{% endif %}
+</div>
+<hr />
+{% include footer.html %}
+</div>
+{% include ga.html %}
+</body>
+</html>
