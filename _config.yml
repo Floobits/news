@@ -1,0 +1,14 @@
+markdown: rdiscount
+rdiscount:
+  extensions: [smart]
+paginate: 10
+permalink: /:year/:month/:day/:title/
+pygments: true
+url: https://news.floobits.com
+author: Floobits
+title: Floobits News
+exclude:
+  - build_release.sh
+  - deploy.sh
+  - less.sh
+  - new_post.sh
