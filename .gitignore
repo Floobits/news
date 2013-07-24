@@ -2,4 +2,5 @@
 .floo
 .sublime-project
 _site
+news-*.tar.gz
 styles/main*.css
