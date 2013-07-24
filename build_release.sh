@@ -5,4 +5,4 @@ RELEASE_NAME="news-$DATETIME"
 
 jekyll build && \
 echo "$RELEASE_NAME.tar.gz" && \
-tar -c -z -f $RELEASE_NAME.tar.gz _site
+tar -c -z -f $RELEASE_NAME.tar.gz -C _site .
