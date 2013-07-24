@@ -8,7 +8,8 @@ fi
 
 if [ $# -eq 1 ]
 then
-  TARBALL=`./build_release.sh`
+  ./build_release.sh
+  TARBALL=`ls -t *.tar.gz | head -n 1`
   HOST=$1
 else
   TARBALL=$1
