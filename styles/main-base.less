@@ -1,0 +1,209 @@
+.header-font() {
+    font-family: "Helvetica Neue Light", "HelveticaNeue-light", "HelveticaNeue", Helvetica, Verdana, Arial, sans-serif;
+    font-weight: lighter;
+}
+
+@max_width: 37em;
+@min_width: 27em;
+@body_margin: 10px;
+
+body {
+    background: @body_background;
+    font-family: Baskerville, "Baskerville Old Face", "Hoefler Text", georgia, Garamond, times, serif;
+    font-size: 121%;
+    color: @body_color;
+    margin: @body_margin;
+    text-rendering: optimizeLegibility;
+}
+
+a, a:link { color: @body_color; text-decoration: none; }
+a:visited { color: @link_visited; }
+a:hover { text-decoration: underline; }
+a:active { color: @link_active; }
+
+hr {
+    height: 1px;
+    background-color: @body_color;
+    border: 0;
+    clear: both;
+}
+
+// Nav thingy at the bottom of posts.
+.nav {
+}
+.nav(@direction) {
+    float: @direction;
+    line-height: 150%;
+    text-align: center;
+    max-width: 40%;
+    .header-font;
+    padding-bottom: 0.67em;
+}
+.nav-left { .nav(left); }
+.nav-right { .nav(right); }
+
+#wrapper {
+    margin: 0 auto;
+    max-width: @max_width;
+    min-width: @min_width;
+}
+
+// Main page list
+#post-list {
+    font-size: 115%;
+    margin: 0 auto;
+    max-width: 25em;
+    .year {
+        color: @link_active;
+        font-size: 140%;
+    }
+    .month {
+        color: @gallery_link_visited;
+        font-size: 125%;
+    }
+    .day {
+        float: left;
+        clear: both;
+        text-align: center;
+        width: 4em;
+    }
+    .index-post-title {
+        padding-left: 4em;
+    }
+}
+
+#header {
+    .header-font;
+    text-align: center;
+    font-size: 120%;
+    ul {
+        display: inline;
+        list-style: none;
+        padding-left: 0;
+        li {
+            display: inline;
+            line-height: 200%;
+            margin: 0 1em;
+            white-space: nowrap;
+        }
+    }
+    #home-link {
+        color: @body_color;
+        font-weight: bold;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    .header-font;
+    margin: 1em 0 0 0;
+}
+
+.post-header {
+    .header-font;
+    .post-title {
+        margin-top: 0.75em;
+        font-size: 1.9em;
+    }
+    .post-date {
+        line-height: 150%;
+        text-align: right;
+        width: 100%;
+    }
+}
+.post {
+    line-height: 145%;
+    img { max-width: 100%; }
+    a, a:link { text-decoration: underline; }
+}
+
+.fixed-font {
+    font-family: Menlo, "Deja Vu Sans Mono", Consolas, monospace;
+}
+
+// Make code more easily scrollable in iOS
+.highlight {
+    -webkit-overflow-scrolling: touch;
+}
+
+pre {
+    line-height: 120%;
+    padding: 0.5em;
+    overflow: auto;
+}
+
+code {
+    font-size: 11pt;
+    .fixed-font;
+}
+
+#beast-mode {
+    font-size: 50%;
+    .fixed-font;
+    max-width: 20em;
+    margin: 0 auto;
+    padding: 2em 0;
+    cursor: pointer;
+    text-align: center;
+    opacity: 0.2;
+    &:hover {
+      text-decoration: underline;
+      opacity: 1.0;
+    }
+    span {
+      color: @body_background;
+      background-color: @body_color;
+      padding: 0.5em;
+    }
+}
+
+.image-border { left: -4em; border: 2em #111 solid; }
+
+#gallery-list {
+    text-align: center;
+    background-color: #222;
+    margin: 1em -@body_margin 0px -@body_margin;
+    min-width: @min_width;
+    color: @link_visited;
+    a, a:link { color: @gallery_link; text-decoration: none; }
+    a:visited { color: @gallery_link_visited; }
+    a:active { color: @body_background; }
+}
+.gallery-index {
+    display: inline-block;
+    text-align: center;
+    padding: 2em 0 3em 0;
+    margin: 1em 2em;
+    min-width: 300px;
+    min-height: 300px;
+    img {
+        max-height: 400px;
+        max-width: 400px;
+        .image-border;
+    }
+}
+.gallery {
+    #gallery-list;
+    .gallery-image-wrapper {
+        height: 400px;
+        width: 400px;
+        display: inline-block;
+        margin: 4em;
+        padding: 0;
+        position: relative;
+    }
+    .gallery-image {
+        margin: auto;
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        max-height: 100%;
+        max-width: 100%;
+        .image-border;
+    }
+    .disclaimer-cc-by-sa {
+        font-size: 50%;
+        padding: 1em;
+    }
+}
