@@ -10,5 +10,4 @@ title: Floobits News
 exclude:
   - build_release.sh
   - deploy.sh
-  - less.sh
   - post.sh
