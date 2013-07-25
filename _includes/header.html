@@ -1,5 +1,15 @@
-<div id="header">
-    <ul>
-        <li><a id="home-link" href="/">Floobits News</a></li>
-    </ul>
+<div id="navbar_container">
+  <div class="container">
+    <div class="navbar">
+      <div class="navbar-inner" style="float: right;">
+        <ul id="top_nav" class="nav">
+          <li><a href="/">News</a></li>
+          <li id="nav_main_page"><a href="https://floobits.com/">F</a></li>
+        </ul>
+      </div>
+      <h1 id="header">
+        <a href="{{ page.url | split:"index.html" | first }}">{{ page.title }}</a>
+      </h1>
+    </div>
+  </div>
 </div>

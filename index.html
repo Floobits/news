@@ -1,22 +1,10 @@
 ---
-layout: default
-title: ~/
+layout: index
+title: Floobits News
 ---
 
-<div id="post-list">
 {% for post in site.posts %}
-{% capture post_year %}{{ post.date | date: "%Y" }}{% endcapture %}
-{% capture post_month %}{{ post.date | date: "%b" }}{% endcapture %}
-    {% if last_post_year != post_year %}
-{% capture last_post_year %}{{ post_year }}{% endcapture %}
-<br /><div class="year">{{ last_post_year }}</div>
-    {% endif %}
-    {% if last_post_month != post_month %}
-{% capture last_post_month %}{{ post_month }}{% endcapture %}
-<br /><div class="month">{{ last_post_month }}</div><br />
-    {% endif %}
-<div class="day">{{ post.date|date:"%d" }}</div>
-<div class="index-post-title"><a href="{{ post.url }}">{{ post.title }}</a></div>
-<br />
+  <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+  <small>{{ post.date | date_to_string }}</small>
+  <hr />
 {% endfor %}
-</div>

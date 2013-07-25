@@ -1,8 +1,12 @@
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>Floobits News: {{ page.title }}</title>
-    <meta name="viewport" content="width=740" />
-    <link rel="canonical" href="{{ site.url }}{{ page.url | split:"index.html" | first }}" />
-    <link rel="alternate"  type="application/atom+xml" href="/feed.atom" title="Floobits News" />
-    <link id="main-css" rel="stylesheet" type="text/css" media="all" href="/static/css/main.css">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  {% if page.title == "Floobits News" %}
+  <title>Floobits News</title>
+  {% else %}
+  <title>Floobits News: {{ page.title }}</title>
+  {% endif %}
+  <meta name="viewport" content="width=740" />
+  <link rel="canonical" href="{{ site.url }}{{ page.url | split:"index.html" | first }}" />
+  <link rel="alternate"  type="application/atom+xml" href="/feed.atom" title="Floobits News" />
+  <link id="main-css" rel="stylesheet" type="text/css" media="all" href="https://floobits.com/static/css/main.css">
 </head>
