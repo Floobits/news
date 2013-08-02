@@ -9,13 +9,15 @@ categories:
 
 We made a new tool: [Floomatic](https://floobits.com/help/floomatic/). Floomatic synchronizes a directory with a Floobits workspace. Like [our plugins](https://floobits.com/help/plugins/), Floomatic is open source software. [Check it out on GitHub](https://github.com/Floobits/floomatic).
 
-We use Floobits to develop Floobits, so a lot of the features we build are to solve our own problems. One issue we had was that we could collaborate on code just fine, but it wasn't easy for both of us to see the results of our changes. This was especially apparent when doing web development. Usually, one of us would run a local development instance of Floobits. Then we'd screen-share or just describe to each other what the changes looked like.
+We use Floobits to develop Floobits, so a lot of the features we build are to solve our own problems. While we could easily collaborate on code, we sometimes had difficulty showing each other the results of our changes. This was especially apparent when doing web development. Usually, one of us would run a local development instance of Floobits. Then we'd screen-share or (most likely) describe to each other what the changes looked like or any tracebacks we encountered.
 
-Floomatic solves this problem. It's very useful for shipping changes to a server in real-time. To sync changes to a testing server, we ssh in, `cd` into wwwroot, and run...
+Floomatic solves this problem by allowing us to ship changes to a shared server in real-time. We simply ssh in, `cd` into wwwroot, and run...
 
 `floomatic --read-only --join https://floobits.com/r/owner_name/workspace_name`
 
-We also built hooks that can be called after a files change. We use hooks to regenerate CSS whenever our [LESS](http://lesscss.org/) changes, and [compress JavaScript](https://github.com/jezdez/django_compressor).
+...and we can both visit our development server to see changes as we type them.
+
+Floomatic also supports hooks that are called after files change. We use hooks to regenerate CSS whenever our [LESS](http://lesscss.org/) changes, and rebuild our [compressed JavaScript](https://github.com/jezdez/django_compressor).
 
 Like our [Sublime Text](https://github.com/Floobits/floobits-sublime) and [Vim](https://github.com/Floobits/floobits-vim) plugins, Floomatic obeys `.gitignore` and `.flooignore` files. If you don't want to ship your local settings to a shared development server, simply add them to `.flooignore`.
 
