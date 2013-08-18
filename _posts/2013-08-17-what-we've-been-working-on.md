@@ -26,8 +26,10 @@ In the near-term, we plan to:
 * improve support for larger binary files.
 * make it easier to discover others' workspaces.
 
-Looking farther out, we plan on adding proper async support to Vim and adding support for IntelliJ. We'd love to hear your suggestions for what we can improve. Send us
+Looking farther out, we plan on adding proper async support to Vim and adding support for IntelliJ. We'd love to hear your suggestions for what we can improve. Please <a id="email_us" href="">email us</a> with feedback.
 
 Sincerely,
 
 -- The Floobits Team
+
+{% include email.html %}
