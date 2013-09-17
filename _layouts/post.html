@@ -11,6 +11,16 @@
       {{ content }}
     </div>
 
+    {% for author in page.authors %}
+    <div>
+    {% if author == "ggreer" %}
+      {% include authors/ggreer.html %}
+    {% elsif author == "kansface" %}
+      {% include authors/kansface.html %}
+    {% endif %}
+    </div>
+    {% endfor %}
+
     <div style="padding-top: 1em;">
       {% if page.previous %}
         <span class="pull-left">
