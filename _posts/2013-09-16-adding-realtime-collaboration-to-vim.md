@@ -10,9 +10,7 @@ authors:
 categories:
 ---
 
-When we started Floobits, we had to decide which editors to support first. Sublime Text was our first choice, since we both used it daily. Vim was second on our list, for two reasons: First, the Vim community is full of hackers, tinkerers, and friends. Second, collaborative editing is Vim's [third-most requested feature](http://www.vim.org/sponsor/vote_results.php).
-
-Emacs rounded-out our list. It is the yang to Vim's yin. We couldn't choose just one.
+When we started Floobits, decideed to support Sublime Text first. This was natural; we both used it daily. Vim was second on our list, for two reasons: First, the Vim community is full of hackers, tinkerers, and friends. Second, collaborative editing is Vim's [third-most requested feature](http://www.vim.org/sponsor/vote_results.php). Emacs rounded-out our list. It is the yang to Vim's yin. We couldn't choose just one.
 
 We thought we'd be able to write one editor plugin per month. [Like most estimates, ours were ridiculously optimistic](http://en.wikipedia.org/wiki/Planning_fallacy). So far we've averaged 3 months per editor. Vim took longer than average.
 
@@ -30,13 +28,16 @@ For example, `autocmd BufEnter echo 'Hello'` will echo "Hello" every time you sw
 
     function !cursor_hold()
         echo 'Hello'
+        " literally the key 'f' followed by the 'escape' key
         call feedkeys('f\e', 'n')
     endfunction
 
     set updatetime=100
     autocmd CursorHold call cursor_hold()
 
-Hooray! Once we find a key sequence with no side-effects, we should be set.
+Hooray! Once we find a key sequence with no side-effects, we should be set.  
+
+CursorHold only fires when Vim is in normal mode.  CursorHoldI is like CursorHold, but only fires while in Insert Mode.  In Vim, escape aborts a command but also is used to exit insert mode, so we have to resort to a different 
 
 Before 7.2.025, exactly such a command existed in the form of the K_IGNORE byte sequence and feedkeys.
 
