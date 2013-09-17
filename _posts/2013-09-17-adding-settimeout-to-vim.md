@@ -22,11 +22,11 @@ After some deliberation, we decided to build a JavaScript-style [`setTimeout()`]
 <br class="separator" />
 ### Understanding Vim
 
-Step 0 was to clone Vim and start poking around. The Vim codebase is intimidating, to put it mildly. A quarter-century of development by some of the best minds in software has created a text editor that, while powerful and extensible, is not without cruft. Vim was originally written for Amiga, and `os_amiga.c` still exists. There appears to be support for VMX, 16-bit Windows, BeOS, and even MS-DOS.
+Step 0 was to clone Vim and start poking around. The Vim codebase is intimidating, to put it mildly. A quarter-century of development has created a text editor that, while powerful and extensible, is not without cruft. Vim was originally written for Amiga, and `os_amiga.c` still exists. There appears to be support for VMX, 16-bit Windows, BeOS, and even MS-DOS.
 
-As mentioned previously, Vim is input-driven. For the most part, Vim reacts to input from the user. There's no easy way to tell Vim, "run this in 500 milliseconds" or "run this *every* 500 milliseconds." There's only, "run this after user does X." This assumption is built into every level of Vim, down to the architecture-specific input functions. We discovered this by following the code.
+As mentioned previously, Vim is input-driven. For the most part, Vim reacts to input from the user. There's no easy way to tell Vim, "run this in 500 milliseconds" or "run this *every* 500 milliseconds." There's only, "run this after the user does X." This assumption is built into every level of Vim, down to the architecture-specific input functions. We discovered this by following the code.
 
-If you want to check it out for yourself, try building Vim and running it in `gdb`. This example is slightly simplified. Most of the time, we used `gdb attach` to avoid corrupting Vim's terminal.
+If you want to see for yourself, try building Vim and running it in `gdb`. This example is slightly simplified. Most of the time, we used `gdb attach` to avoid corrupting Vim's terminal.
 
 {% highlight text %}
 ggreer@lithium:~/code/vim% CFLAGS="-g -DDEBUG" ./configure --with-features=huge
@@ -51,7 +51,7 @@ Continuing.
 ...
 {% endhighlight %}
 
-You'll have to do this for a little while to get past Vim's initialization code. You may have to hit backspace to get rid of some control characters.
+You'll have to do this for a little while to get past Vim's initialization code. You may also have to hit backspace to get rid of some control characters.
 
 {% highlight text %}
 ...
@@ -72,7 +72,7 @@ Breakpoint 1, RealWaitForChar (fd=0, msec=4000, check_for_gpm=0x0) at os_unix.c:
 (gdb)
 {% endhighlight %}
 
-After playing around more in `gdb`, we got a good idea of Vim's [control flow](http://en.wikipedia.org/wiki/Control_flow). Vim's main loop is, naturally, a function called `main_loop()` in `main.c`. There are a few ways the main loop can end-up calling low-level input functions, but eventually control gets to `RealWaitForChar()` in `os_unix.c`. `RealWaitForChar()` calls `select()`, or falls back to `poll()` if `select()` isn't available.
+After playing around more in `gdb`, we got a good idea of Vim's [control flow](http://en.wikipedia.org/wiki/Control_flow). Vim's main loop is, naturally, a function called `main_loop()` in `main.c`. There are a few ways the main loop can call low-level input functions, but eventually control is passed to `RealWaitForChar()` in `os_unix.c`. `RealWaitForChar()` calls `select()`, or falls back to `poll()` if `select()` isn't available.
 
 Running Vim in a GUI follows a different path, but it still boils down to one function: `gui_wait_for_chars()` in `gui.c`. 
 
@@ -94,9 +94,9 @@ which calls:
 
 
 <br class="separator" />
-### Implementing Settimeout
+### Settimeout
 
-Our desired API was simple. We'd make three new Vimscript functions:
+Our desired API was simple. The plan was to make three new Vimscript functions:
 
 * `settimeout()`
 * `setinterval()`
@@ -108,13 +108,13 @@ Like their JavaScript counterparts, Vim's `settimeout()` and `setinterval()` wou
 let timeout_id = settimeout(2000, 'echo("hello")')
 {% endhighlight %}
 
-...would print "hello" after two seconds. To cancel the timeout, just call...
+...would print "hello" after two seconds. Calling...
 
 {% highlight text %}
 canceltimeout(timeout_id)
 {% endhighlight %}
 
-Nothing too crazy there.
+...would cancel the timeout. Nothing too crazy there.
 
 <br class="separator" />
 ### Timeouts
@@ -134,7 +134,7 @@ typedef struct timeout_T timeout_T;
 timeout_T *timeouts = NULL;
 {% endhighlight %}
 
-Ordered insertion is `O(n)`, but fortunately `n` is very small.
+Ordered insertion is `O(n)`, but fortunately `n` is very small in most cases.
 
 {% highlight cpp %}
 /*
@@ -204,18 +204,43 @@ Now all we have to do is run `call_timeouts()` often enough and the job is done!
 <br class="separator" />
 ### Select Loops
 
-`RealWaitForChar()` can take a timeout, or it can block until there's user input. The initial plan was to put a loop in `RealWaitForChar()` and periodically check if there were timeouts to run while waiting for user input.
+Vim's `RealWaitForChar()` can take a timeout, or it can block until there's user input. The initial plan was to put a loop in `RealWaitForChar()` and periodically run `call_timeouts()` while waiting for user input.
 
-Once we delved deeper into the code, we noticed much of our work had been done already. `RealWaitForChar()` already had a loop in it. It even called `select()`. To make our lives easier and minimize the number of changes, we decided to take advantage of this `select()` loop. 
+Once we delved deeper into the code, we noticed much of our work was done. `RealWaitForChar()` already had a loop in it. It even called `select()`. To make our lives easier and minimize the number of changes, we decided to take advantage of this `select()` loop. 
 
-The loop is pretty simple: until `RealWaitForChar()`'s timeout is reached, run `call_timeouts()` every 100 milliseconds.
-<!-- TODO: more info here -->
+The idea behind the loop is pretty simple: until `RealWaitForChar()`'s timeout is reached, run `call_timeouts()` every 100 milliseconds. The implementation in Vim is a little tricky, but a typical `select()` loop looks like this:
+
+{% highlight cpp %}
+int rv;
+fd_set read_fds;
+struct timeval tv;
+
+FD_ZERO(&read_fds);
+FD_SET(STDIN, &read_fds);
+
+tv.tv_sec = 0;
+tv.tv_usec = 100000; /* 100 milliseconds */
+
+while (1) {
+    rv = select(STDIN + 1, &read_fds, NULL, NULL, &tv);
+    if (rv == -1) {
+        printf("Error in select: %s\n", strerror(errno));
+        exit(1);
+    }
+    call_timeouts();
+
+    if (FD_ISSET(STDIN, &read_fds)) {
+        printf("Somebody typed something.\n");
+    }
+}
+{% endhighlight %}
+
+This loop runs `call_timeouts()` every 100 milliseconds, or more often if the user types something. Reducing `tv` will give more accurate timer resolution at the cost of more CPU usage. It's also possible to set `tv` based on the next timeout in the linked list. If there are a few widely-spaced timeouts, this can be more efficient. On the other hand, it also makes it easier to waste tons of CPU time.
+
 
 <br class="separator" />
 ### Submitting the Patch
 
-Once we thought our work was ready for others to see, [we posted the patch to Vim-dev](https://groups.google.com/d/msg/vim_dev/-4pqDJfHCsM/LkYNCpZjQ70J). After some healthy discussion (and a little bikeshedding), we followed some suggestions and improved our patch. The biggest change was implementing cross-platform monotonic timers. It's often forgotten that `gettimeofday()` is not required to increase. A user can change the clock, causing timeouts to be called too early or too late. Worse, services like [`ntpd`](http://en.wikipedia.org/wiki/Ntpd) can tweak the system clock. There's no cross-platform monotonic clock API yet, so we had to write code specific to Linux, OS X, BSD, and Windows.
+Once we thought our work was ready for others to see, [we posted the patch to Vim-dev](https://groups.google.com/d/msg/vim_dev/-4pqDJfHCsM/LkYNCpZjQ70J). After some healthy discussion (and a little bikeshedding), we followed some suggestions to improve our patch. The biggest change was implementing cross-platform monotonic timers. It's often forgotten that `gettimeofday()` is not required to increase. A user can change the clock, causing timeouts to be called too early or too late. Worse, services like [`ntpd`](http://en.wikipedia.org/wiki/Ntpd) can tweak the system clock without the user noticing. There is no cross-platform monotonic clock API, so we had to write code specific to Linux, OS X, BSD, and Windows.
 
-[Our latest patch](https://github.com/Floobits/vim/compare/835cc6e85d8fbc14c4e659a4c0452ca5f699d805...master) is the result of almost a year of research, work, and wild flailing-about. It hasn't been easy, but the reward will be worth it.
-
-We're glad the finish line for Vim is in sight. We've learned a lot from this project, but there's still so much more for us to do. Wish us luck.
+[Our latest patch](https://github.com/Floobits/vim/compare/835cc6e85d8fbc14c4e659a4c0452ca5f699d805...master) is the culmination of all our research, hard work, and wild flailing-about. We're glad the finish line is in sight. We've learned a lot from this project, but there are many more editors we want to support.
