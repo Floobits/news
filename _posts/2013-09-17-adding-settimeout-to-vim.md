@@ -19,6 +19,7 @@ At the end of [the previous post]({{ page.previous.url }}), we finally got the b
 After some deliberation, we decided to build a JavaScript-style [`setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/window.setTimeout).
 
 
+<br class="separator" />
 ### Understanding Vim
 
 Step 0 was to clone Vim and start poking around. The Vim codebase is intimidating, to put it mildly. A quarter-century of development by some of the best minds in software has created a text editor that, while powerful and extensible, is not without cruft. Vim was originally written for Amiga, and `os_amiga.c` still exists. There appears to be support for VMX, 16-bit Windows, BeOS, and even MS-DOS.
@@ -27,45 +28,49 @@ As mentioned previously, Vim is input-driven. For the most part, Vim reacts to i
 
 If you want to check it out for yourself, try building Vim and running it in `gdb`. This example is slightly simplified. Most of the time, we used `gdb attach` to avoid corrupting Vim's terminal.
 
-    ggreer@lithium:~/code/vim% CFLAGS="-g -DDEBUG" ./configure --with-features=huge
-    ...
-    ggreer@lithium:~/code/vim% make
-    ...
-    ggreer@lithium:~/code/vim% gdb ./src/vim
-    Reading symbols from /home/ggreer/code/vim/src/vim...done.
-    (gdb) break RealWaitForChar
-    Breakpoint 1 at 0x54efba: file os_unix.c, line 5069.
-    (gdb) run
-    Breakpoint 1, RealWaitForChar (fd=0, msec=0, check_for_gpm=0x0) at os_unix.c:5069
-    5069        int         nb_fd = netbeans_filedesc();
-    (gdb) c
-    Continuing.
-    (gdb) c
-    Continuing.
-    (gdb) c
-    Continuing.
-    (gdb) c
-    Continuing.
-    ...
+{% highlight text %}
+ggreer@lithium:~/code/vim% CFLAGS="-g -DDEBUG" ./configure --with-features=huge
+...
+ggreer@lithium:~/code/vim% make
+...
+ggreer@lithium:~/code/vim% gdb ./src/vim
+Reading symbols from /home/ggreer/code/vim/src/vim...done.
+(gdb) break RealWaitForChar
+Breakpoint 1 at 0x54efba: file os_unix.c, line 5069.
+(gdb) run
+Breakpoint 1, RealWaitForChar (fd=0, msec=0, check_for_gpm=0x0) at os_unix.c:5069
+5069        int         nb_fd = netbeans_filedesc();
+(gdb) c
+Continuing.
+(gdb) c
+Continuing.
+(gdb) c
+Continuing.
+(gdb) c
+Continuing.
+...
+{% endhighlight %}
 
 Do this for a little while to get past Vim's initialization code. You may have to backspace to get rid of some control characters.
 
-    ...
-    (gdb) c
-    Continuing.
-    Breakpoint 1, RealWaitForChar (fd=0, msec=4000, check_for_gpm=0x0) at os_unix.c:5069
-    5069        int         nb_fd = netbeans_filedesc();
-    (gdb) bt
-    #0  RealWaitForChar (fd=0, msec=0, check_for_gpm=0x0) at os_unix.c:5069
-    #1  0x000000000054eea0 in mch_breakcheck () at os_unix.c:4963
-    #2  0x00000000005e1a9d in ui_breakcheck () at ui.c:367
-    #3  0x00000000004cdd35 in vgetorpeek (advance=1) at getchar.c:2026
-    #4  0x00000000004cd54a in vgetc () at getchar.c:1590
-    #5  0x00000000004cda92 in safe_vgetc () at getchar.c:1795
-    #6  0x000000000051e0ac in normal_cmd (oap=0x7fffffffe2d0, toplevel=1) at normal.c:666
-    #7  0x000000000062ab2c in main_loop (cmdwin=0, noexmode=0) at main.c:1329
-    #8  0x000000000062a438 in main (argc=1, argv=0x7fffffffe5d8) at main.c:1020
-    (gdb)
+{% highlight text %}
+...
+(gdb) c
+Continuing.
+Breakpoint 1, RealWaitForChar (fd=0, msec=4000, check_for_gpm=0x0) at os_unix.c:5069
+5069        int         nb_fd = netbeans_filedesc();
+(gdb) bt
+#0  RealWaitForChar (fd=0, msec=0, check_for_gpm=0x0) at os_unix.c:5069
+#1  0x000000000054eea0 in mch_breakcheck () at os_unix.c:4963
+#2  0x00000000005e1a9d in ui_breakcheck () at ui.c:367
+#3  0x00000000004cdd35 in vgetorpeek (advance=1) at getchar.c:2026
+#4  0x00000000004cd54a in vgetc () at getchar.c:1590
+#5  0x00000000004cda92 in safe_vgetc () at getchar.c:1795
+#6  0x000000000051e0ac in normal_cmd (oap=0x7fffffffe2d0, toplevel=1) at normal.c:666
+#7  0x000000000062ab2c in main_loop (cmdwin=0, noexmode=0) at main.c:1329
+#8  0x000000000062a438 in main (argc=1, argv=0x7fffffffe5d8) at main.c:1020
+(gdb)
+{% endhighlight %}
 
 After playing around more in `gdb`, we got a good idea of Vim's [control flow](http://en.wikipedia.org/wiki/Control_flow). Vim's main loop is, naturally, a function called `main_loop()` in `main.c`. There are a few ways the main loop can end-up calling low-level input functions, but eventually control gets to `RealWaitForChar()` in `os_unix.c`. `RealWaitForChar()` calls `select()` or falls back to `poll()` if `select()` isn't available.
 
@@ -86,32 +91,34 @@ which calls:
         which calls RealWaitForChar -->
 
 
-### Implementing `setTimeout()`
+<br class="separator" />
+### Implementing Settimeout
 
 Our desired API was simple. We'd make three functions: `settimeout()`, `setinterval()`, and `canceltimeout()`. `settimeout()` and `setinterval()` would take milliseconds and a command to evaluate. For example, `let timeout_id = settimeout(2000, 'echo("hello")')` would print "hello" after two seconds. Calling `canceltimeout(timeout_id)` would cancel the timeout.
 
 
-`RealWaitForChar()` can either take a timeout or block until there's user input. The initial plan was to put a loop in `RealWaitForChar()` 
 
-
+<br class="separator" />
 ### Timeouts
 
-Representing pending timeouts is pretty straightforward. Timeouts are run in order, so a
+Representing pending timeouts is pretty straightforward. Timeouts are run in order, so a [linked-list](http://en.wikipedia.org/wiki/Linked_list) sorted by time makes a lot of sense. There are more efficient data structures for timeouts, but this is a decent first-pass.
 
-    struct timeout_T {
-        int id;                     /* timeout/interval id */
-        int interval;               /* interval period if interval, otherwise -1 */
-        unsigned long long tm;      /* time to fire (epoch milliseconds) */
-        char_u *cmd;                /* vim command to run */
-        struct timeout_T *next;     /* pointer to next timeout in linked list */
-    };
-    typedef struct timeout_T timeout_T;
+{% highlight c %}
+struct timeout_T {
+    int id;                     /* timeout/interval id */
+    int interval;               /* interval period if interval, otherwise -1 */
+    unsigned long long tm;      /* time to fire (epoch milliseconds) */
+    char_u *cmd;                /* vim command to run */
+    struct timeout_T *next;     /* pointer to next timeout in linked list */
+};
+typedef struct timeout_T timeout_T;
+{% endhighlight %}
 
-There are more efficient data structures for timeouts, but 
 
-
+<br class="separator" />
 ### Select Loops
 
+`RealWaitForChar()` can either take a timeout or block until there's user input. The initial plan was to put a loop in `RealWaitForChar()` 
 
 
 Since `select()` was already being called in `RealWaitForChar()`, we decided to make a `select()` loop. The loop is pretty simple: until
@@ -127,3 +134,6 @@ nitpick: need cross-platform monotonic timers (link to http://geekwhisperer.blog
 
 first commit Thu Mar 21 22:29:44 2013
 
+https://groups.google.com/d/msg/vim_dev/-4pqDJfHCsM/BSy3spynGwoJ
+
+https://github.com/Floobits/vim/compare/835cc6e85d8fbc14c4e659a4c0452ca5f699d805...master
