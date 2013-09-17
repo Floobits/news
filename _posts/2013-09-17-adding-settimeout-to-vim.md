@@ -206,7 +206,7 @@ Now all we have to do is run `call_timeouts()` often enough and the job is done!
 
 Vim's `RealWaitForChar()` can take a timeout, or it can block until there's user input. The initial plan was to put a loop in `RealWaitForChar()` and periodically run `call_timeouts()` while waiting for user input.
 
-Once we delved deeper into the code, we noticed much of our work was done. `RealWaitForChar()` already had a loop in it. It even called `select()`. To make our lives easier and minimize the number of changes, we decided to take advantage of this `select()` loop. 
+Once we delved deeper into the code, we noticed much of our work was already done. `RealWaitForChar()` had a loop in it. It even called `select()`. To make our lives easier and minimize the number of changes, we decided to take advantage of this `select()` loop. 
 
 The idea behind the loop is pretty simple: until `RealWaitForChar()`'s timeout is reached, run `call_timeouts()` every 100 milliseconds. The implementation in Vim is a little tricky, but a typical `select()` loop looks like this:
 
@@ -243,4 +243,6 @@ This loop runs `call_timeouts()` every 100 milliseconds, or more often if the us
 
 Once we thought our work was ready for others to see, [we posted the patch to Vim-dev](https://groups.google.com/d/msg/vim_dev/-4pqDJfHCsM/LkYNCpZjQ70J). After some healthy discussion (and a little bikeshedding), we followed some suggestions to improve our patch. The biggest change was implementing cross-platform monotonic timers. It's often forgotten that `gettimeofday()` is not required to increase. A user can change the clock, causing timeouts to be called too early or too late. Worse, services like [`ntpd`](http://en.wikipedia.org/wiki/Ntpd) can tweak the system clock without the user noticing. There is no cross-platform monotonic clock API, so we had to write code specific to Linux, OS X, BSD, and Windows.
 
-[Our latest patch](https://github.com/Floobits/vim/compare/835cc6e85d8fbc14c4e659a4c0452ca5f699d805...master) is the culmination of all our research, hard work, and wild flailing-about. We've learned a lot from this project, but we're glad the finish line is in sight. There are many more editors we want to support.
+[Our latest patch](https://github.com/Floobits/vim/compare/835cc6e85d8fbc14c4e659a4c0452ca5f699d805...master) is the culmination of all our research, hard work, and wild flailing-about. If you'd like to play around with `settimeout()`, clone [our Vim fork on GitHub](https://github.com/Floobits/vim).
+
+We've learned a lot from this project, but we're glad the finish line is in sight. There is no shortage of editors we want to support.

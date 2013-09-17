@@ -7,6 +7,7 @@ title: Adding Realtime Collaboration to Vim
 authors:
     kansface
 categories:
+    Vim
 ---
 
 When we started Floobits, we thought we'd be able to write one editor plugin per month. [Like most estimates, ours were ridiculously optimistic](http://en.wikipedia.org/wiki/Planning_fallacy). So far we've averaged 3 months per editor. Vim has taken longer than average.
@@ -87,4 +88,4 @@ So we had an event loop that worked, but broke some useful features of Vim, that
 
 We had spent four months, on and off, desperately searching for a way to make Vim work with Floobits.  It was about this time that [philips](https://github.com/philips) suggested we patch and distribute our own version of Vim.
 
-Stay tuned for part 2 to learn about writing event loops, and patching Vim!
+Next up: [writing event loops, and patching Vim]({{ page.next.url }})!
