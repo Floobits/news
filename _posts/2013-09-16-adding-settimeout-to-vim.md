@@ -14,37 +14,38 @@ When we started Floobits, we had to decide which editors to support first. Subli
 
 Emacs rounded-out our list. It is the yang to Vim's yin. We couldn't choose just one.
 
-We thought we'd be able to write one editor plugin per month. Like most estimates, ours were ridiculously optimistic. We ended up taking 2-3 months per editor.
+We thought we'd be able to write one editor plugin per month. [Like most estimates, ours were ridiculously optimistic](http://en.wikipedia.org/wiki/Planning_fallacy). So far we've averaged 3 months per editor. Vim took longer than average.
 
-Building real-time collaboration into editors is *hard*. Most actions in editors are user-initiated. You type keys and text changes. With collaborative editing, actions can be initiated remotely. You *don't* type keys and text changes. To solve this problem, we need an event handler for network I/O: when data comes in, update buffers. Most editor plugin architectures don't support this behavior. (Emacs does. Thanks, Emacs!) So to work around this lack-of-feature, we had to build our own event loop.
+Building real-time collaboration into editors is *hard*. Most actions in editors are user-initiated. You type keys and text changes. With collaborative editing, actions can be initiated remotely. You *don't* type keys and text changes. The easiest way to solve this problem is to use an event handler for network I/O: when data comes in, update text.  Most editors (including Vim) don't support this behavior. We had to build our own event loop to handle incoming data.
 
-put select() loop example and settimeout and stuff
+We researched ways to run our event loop but only found dead ends. We couldn't run it in a separate thread because Vim isn't thread-safe. We couldn't run it in a separate process because all [IPC](http://en.wikipedia.org/wiki/Inter-process_communication) in Vim is blocking and must be initiated by Vim. We couldn't use the [netbeans interface](http://vimdoc.sourceforge.net/htmldoc/netbeans.html) because the implementation was buggy and incomplete.
 
-need to execute a function every 100ms(or similiar). need timer to do that
+All we really needed to drive our event loop was the ability to execute a function every 100 milliseconds or so. Vim has its own event loop, but it blocks until the user gives input. If the user is idle, there's no way to handle incoming events from other collaborators.
 
-matt researched ways to get async behavior in vim
-things that definitely won't work
-twisted (covim)
+If user input is the only thing that can drive Vim's event loop, our efforts are hopeless. Fortunately, Vim has event hooks called [autocommands](http://vimdoc.sourceforge.net/htmldoc/autocmd.html).
 
+For example, `autocmd BufEnter echo 'Hello'` will echo "Hello" every time you switch buffers. There are no autocommands for timers, but there is [`CusorHold`](http://vimdoc.sourceforge.net/htmldoc/autocmd.html#CursorHold). `CusorHold` runs a command if there have been no keys pressed for `updatetime` milliseconds. It's possible to abuse `CursorHold` to get an event loop. We just need to write a `CursorHold` handler that makes Vim think a key was pressed. The keys pressed need to be invisible to the user. We don't want to fire off an 'i' and switch to insert mode.
 
-things that might work:
-
-[Autocommands](http://vimdoc.sourceforge.net/htmldoc/autocmd.html) are a powerful feature of Vim. They let you define commands to run after certain actions. For example, `autocmd BufEnter echo 'Hello'` will echo "Hello" every time you switch buffers. There are no autocommands for timers, but it is possible to abuse [`CusorHold`](http://vimdoc.sourceforge.net/htmldoc/autocmd.html#CursorHold) to get an event loop. `CusorHold` runs a command if there have been no keys pressed for `updatetime` milliseconds, which defaults to 4000. 
-
-To make an event loop, we just have to have a `CursorHold` autocommand that makes Vim think a key was hit. Then it will fire every `updatetime` milliseconds. For example, to get Vim to echo "Hello" every 100 milliseconds:
+`Updatetime` defaults to 4000 milliseconds, but plugins can change it. This will print "Hello" every 100 milliseconds.
 
     function !cursor_hold()
         echo 'Hello'
         call feedkeys('f\e', 'n')
     endfunction
 
-    set updatetime=50
+    set updatetime=100
     autocmd CursorHold call cursor_hold()
 
+Hooray! Once we find a key sequence with no side-effects, we should be set.
 
-If you search for ways to make a timer in vim, one of the first things you'll stumble into is the `K_IGNORE` trick.  The basic idea is that Vim munges various forms of input into sequences it knows how to deal with.  Input can be anything from a mouse, to the network, to a user typing (or not in some cases).  Sometimes, it is desirable to take a pass through the event loop but take no other actions.  For instance, the CursorHold autocommand fire off after 'updatetime' number of seconds if no action is taken.  The autocommand will only fire again after the user takes some action.  Vim uses K_IGNORE to fulfill this function.  Before 7.2.025, it was possible to simply change the updatetime to be quite small, say 50 ms, wait for the CursorHold autocommand to fire, then to pass Vim K_IGNORE via the feedkeys command.  K_IGNORE reset the timer for the autocommand, forming a loop.  Unfortunately, if the plugin were to call into Vim internals in any meaningful way, you'd create an infinte loop due to implementation details.  This bug/feature was removed in 2010.  In the [thread concerning its removing](http://vim.1045645.n5.nabble.com/K-IGNORE-trick-periodic-execution-td1194386.html), Bram suggested plugin authors instead use the key sequence "f\e" instead.
+Before 7.2.025, exactly such a command existed in the form of the K_IGNORE byte sequence and feedkeys.
 
-Since current versions of Vim removed the K_IGNORE hack, we took Bram's advice and implemented the new hack.  The basic idea here is the same as before, except to use what could be the start of a command and to escape it instead of an undocumented internal byte sequence ("\x80\xFD\x35").  We our first implemention of our event loop used f\e on Apr 9.  It seemed to work, but that was only because we were largley unfamiliar with Vim at that time.
+    " K_IGNORE
+    call feedkeys('\x80\xFD\x35', 'n')
+
+K_IGNORE is an undocumented, internal feature of Vim which is used to implement things like CursorHold.  Internally, Vim translates all inputs into keycodes.  For instance, a left mouse click turns into K_MOUSEDOWN.  K_IGNORE is such a key code which does nothing. Vim does no validation on input so its possible to feed K_IGNORE to Vim as if a user is typing it. Unfortunately, if the plugin were to call into Vim internals in any meaningful way, it would create an infinte loop.  This bug/feature was removed in 2010.  In the [thread concerning its removing](http://vim.1045645.n5.nabble.com/K-IGNORE-trick-periodic-execution-td1194386.html), Bram suggested plugin authors instead use the key sequence "f\e" instead.
+ 
+
 Vim has modes.  The default mode is command line mode, whereby the user can type commands for Vim.  Inputing text into a buffer must be done in Insert Mode.  Unfortunately, escape exits insert mode into command line mode.  So, this isn't too bad, you just use CursorHoldI (ie, cursorhold for insert mode), and then do some other action that has no effect, like moving the cursor left, then right.
 
 
@@ -56,6 +57,7 @@ Vim has modes.  The default mode is command line mode, whereby the user can type
             vim.command("call feedkeys(\"\<Left>\<Right>\",'n')")
     else:
         vim.command("call feedkeys(\"\ei\",'n')")
+
 broke leaderkeys and all other maps because the escape escapes everything before it, fucks with updatetime which breaks other plugins
 
 feedkeys suggested by bram as an alternative to k_ignore, call feedkeys("f\e") ... ()
