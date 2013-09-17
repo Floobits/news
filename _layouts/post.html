@@ -5,7 +5,15 @@
   {% include header.html %}
   <div class="container">
     <p>
-      <small>{{ page.date | date_to_string }}</small>
+      <small>
+        {{ page.date | date_to_string }}
+        {% if page.authors %}
+          by
+        {% endif %}
+        {% for author in page.authors %}
+          {{ author }}
+        {% endfor %}
+      </small>
     </p>
     <div class="post">
       {{ content }}
@@ -13,11 +21,11 @@
 
     {% for author in page.authors %}
     <div>
-    {% if author == "ggreer" %}
-      {% include authors/ggreer.html %}
-    {% elsif author == "kansface" %}
-      {% include authors/kansface.html %}
-    {% endif %}
+      {% if author == "ggreer" %}
+        {% include authors/ggreer.html %}
+      {% elsif author == "kansface" %}
+        {% include authors/kansface.html %}
+      {% endif %}
     </div>
     {% endfor %}
 
