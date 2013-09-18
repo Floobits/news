@@ -86,8 +86,8 @@ It works like:
         :map ,A  oanother line<Esc>
 {% endhighlight %}
 
-Abusing remote-expr broke all maps, making our plugin worthless for power users. It also caused the screen to flicker since we were forced to call redraw to update the terminal! At wits end, we wrote a lame workaround that let the user toggle the event loop on and off. This had all sorts of problems; what would happen if a user forgot to turn the event loop back on? How would we educate new users? We briefly consider trying to dynamically remap sequences at runtime but that too, led nowhere.
+Abusing remote-expr broke all maps, making our plugin worthless for power users. It also caused the screen to flicker since we were forced to call redraw to update the terminal! At wit's end, we wrote a lame workaround that let the user toggle the event loop on and off. This had all sorts of problems; what would happen if a user forgot to turn the event loop back on? How would we educate new users? We briefly consider trying to dynamically remap sequences at runtime but that too, led nowhere.
 
 We had spent four months, on and off, desperately searching for a way to make Vim work with Floobits. So far, we had an event loop that worked for a subset of Vim users, but broke some useful features, that would fall back to a method that really broke Vim. It was about this time that [philips](https://github.com/philips) suggested we patch and distribute our own version of Vim.
 
-Next up: [writing event loops, and patching Vim]({{ page.next.url }})!
+The story continues with: [writing event loops, and patching Vim]({{ page.next.url }})!
