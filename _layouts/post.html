@@ -24,16 +24,18 @@
     </div>
 
     {% for author in page.authors %}
-    <div>
+    <div class="author">
       {% if author == "ggreer" %}
         {% include authors/ggreer.html %}
       {% elsif author == "kansface" %}
         {% include authors/kansface.html %}
+      {% elsif author == "bjorn" %}
+        {% include authors/bjorn.html %}
       {% endif %}
     </div>
     {% endfor %}
 
-    <div style="padding-top: 1em;">
+    <div style="padding-top: 4em;">
       {% if page.previous %}
         <span class="pull-left">
           <a class="nav-left" href="{{ page.previous.url }}">&larr;&nbsp;{{ page.previous.title }}</a>
