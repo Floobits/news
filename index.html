@@ -9,7 +9,18 @@ title: Floobits News
   <hr />
   {% endif %}
   <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-  <small>{{ post.date | date_to_string }}</small>
+  <p>
+    <small>
+      {{ post.date | date_to_string }}
+      {% if post.authors %}
+        by
+      {% endif %}
+      {% for author in post.authors %}
+        {{ author }}
+      {% endfor %}
+    </small>
+  </p>
+
   {% if post.excerpt %}
   <p>
     {{ post.excerpt }}
