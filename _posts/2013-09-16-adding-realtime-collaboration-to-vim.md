@@ -5,9 +5,9 @@ slug: adding-settimeout-to-vim
 published: true
 title: Adding Realtime Collaboration to Vim
 authors:
-    kansface
+    - kansface
 categories:
-    Vim
+    - Vim
 ---
 
 When we started Floobits, we thought we'd be able to write one editor plugin per month. [Like most estimates, ours were ridiculously optimistic](http://en.wikipedia.org/wiki/Planning_fallacy). So far we've averaged 3 months per editor. Vim has taken longer than average.

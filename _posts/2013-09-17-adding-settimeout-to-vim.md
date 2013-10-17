@@ -5,9 +5,9 @@ slug: adding-settimeout-to-vim
 published: true
 title: Adding setTimeout to Vim
 authors:
-    ggreer
+    - ggreer
 categories:
-    Vim
+    - Vim
 ---
 
 At the end of [the previous post]({{ page.previous.url }}), Matt and I finally got the bright idea to patch Vim. Both of us had experience contributing to open source projects, but we knew very little about contributing to Vim. To maximize our chance of success, we decided on a few guidelines:
