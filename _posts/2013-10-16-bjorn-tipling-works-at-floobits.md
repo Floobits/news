@@ -13,4 +13,4 @@ categories:
 
 Bjorn and I have known each other for the better part of a decade. We were on the [Bloglines](http://en.wikipedia.org/wiki/Bloglines) team at Ask.com. We were at [Cloudkick](http://en.wikipedia.org/wiki/Cloudkick). We were at [Rackspace](http://www.rackspace.com/). Now we're at Floobits.
 
-In short: Bjorn's awesome. Matt and I are so happy he decided to join us.
+In short: Bjorn's awesome. Matt and I are so happy he decided to join us. We're going to build all kinds of cool stuff together.
