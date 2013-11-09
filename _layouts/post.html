@@ -19,10 +19,10 @@
         {% endfor %}
       </small>
     </p>
+    <hr />
     <div class="post">
       {{ content }}
     </div>
-
     {% for author in page.authors %}
     <div class="author">
       {% if author == "ggreer" %}
@@ -36,6 +36,7 @@
     {% endfor %}
 
     <div style="padding-top: 4em;">
+      <hr />
       {% if page.previous %}
         <span class="pull-left">
           <a class="nav-left" href="{{ page.previous.url }}">&larr;&nbsp;{{ page.previous.title }}</a>
