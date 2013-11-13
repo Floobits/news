@@ -10,7 +10,6 @@ categories:
 ---
 
 #### WebRTC Video Chat
-
 You may have noticed some new icons in our web editor. Google+ Hangouts are handy, but we don't want to require Floobits users to have a Google account. That's why we've built [WebRTC](http://en.wikipedia.org/wiki/WebRTC) video chat into our editor. It's still in an alpha/testing state, but we use it daily in our own work.
 
 To try out our new video chat, you'll need to have edit permission in a workspace. Once you do, click on the video camera in the upper right:
