@@ -17,13 +17,14 @@ Deciding on a list of cipher suites isn't easy. While some are very secure, only
 
 In the end, we chose security in modern browsers over compatibility with older browsers. If you'd like to configure your site similarly, here's the relevant snippet of our Apache web server config:
 
-    # Disable SSLv2 and v3
-    SSLProtocol All -SSLv2 -SSLv3
-    SSLCompression Off
-    SSLHonorCipherOrder On
-    # Avoid insecure ciphers and support perfect forward secrecy
-    SSLCipherSuite EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4
-
+{% highlight apache %}
+# Disable SSLv2 and v3
+SSLProtocol All -SSLv2 -SSLv3
+SSLCompression Off
+SSLHonorCipherOrder On
+# Avoid insecure ciphers and support perfect forward secrecy
+SSLCipherSuite EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:EDH+aRSA:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4
+{% endhighlight %}
 
 [SSL Labs](https://www.ssllabs.com/ssltest/index.html) has a great tool for testing HTTPS. Compare your results to [ours](https://www.ssllabs.com/ssltest/analyze.html?d=floobits.com&s=54.200.46.41).
 
