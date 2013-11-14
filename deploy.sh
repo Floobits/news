@@ -28,15 +28,15 @@ do
 
   scp -C $TARBALL $HOST:/tmp
 
-  ssh $HOST "sudo mkdir $RELEASE_DIR && \
-    sudo tar xzf /tmp/$RELEASE_NAME.tar.gz --directory $RELEASE_DIR"
-  ssh $HOST "sudo ln -s -f $RELEASE_DIR /data/news-new && \
+  (ssh $HOST "sudo mkdir $RELEASE_DIR && \
+    sudo tar xzf /tmp/$RELEASE_NAME.tar.gz --directory $RELEASE_DIR && \
+    sudo ln -s -f $RELEASE_DIR /data/news-new && \
     sudo mv -T -f /data/news-new /data/news"
 
   if [ $? -eq 0 ]
   then
-    curl -X POST http://$USER:$USER@dev00.floobits.com/deploy/django/$HOST
+    curl -X POST http://$USER:$USER@dev00.floobits.com/deploy/news/$HOST
   else
     echo "OMG DEPLOY FAILED"
-  fi
+  fi) &
 done
