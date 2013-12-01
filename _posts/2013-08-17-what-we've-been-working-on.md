@@ -5,6 +5,7 @@ slug: what-we've-been-working-on
 published: true
 title: What We've Been Working On
 categories:
+  Features
 ---
 
 We've been working tirelessly to improve Floobits. If you haven't tried Floobits in a while, you should have another look.  Over the past couple of months we have:

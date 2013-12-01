@@ -5,6 +5,7 @@ slug: workspace-status-images
 published: true
 title: Workspace Status Images
 categories:
+  Features
 ---
 
 Similar to services such as [Travis-CI](https://travis-ci.org), we've added status images to Floobits workspaces. This makes it easy to let others know when you're working on something.

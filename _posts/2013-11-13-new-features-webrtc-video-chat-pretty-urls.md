@@ -7,6 +7,7 @@ title: 'New Features: WebRTC Video Chat, Nicer URLs'
 authors:
   ggreer
 categories:
+  Features
 ---
 
 #### WebRTC Video Chat
