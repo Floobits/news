@@ -28,7 +28,7 @@ We've also cleaned up some of our URLs. We've removed the `/r` from `floobits.co
 <br />
 #### Flootty Improvements
 
-Finally, we've fixed some nagging issues with non-UTF8 data in [flootty](https://floobits.com/help/flootty/). Flootty now works even if a misbehaving process spews binary data to the terminal. Be sure to update by running `pip install --upgrade flootty`
+Finally, we've fixed some nagging issues with non-UTF8 data in [flootty](https://floobits.com/help/flootty). Flootty now works even if a misbehaving process spews binary data to the terminal. Be sure to update by running `pip install --upgrade flootty`
 
 
 <br />

@@ -12,6 +12,6 @@ categories:
 
 Another week, another feature. 
 
-[import your GitHub repositories](https://floobits.com/import/github/).
+[import your GitHub repositories](https://floobits.com/import/github).
 
 

@@ -6,10 +6,9 @@ published: false
 title: battling-vim
 categories:
 ---
+*This article is part III of our trilogy on adding Floobits Support To Vim. In [part one]({{ page.previous.previous.url }}), we attempted to hack Vim to support asyncronous timers.  In [part II]({{ page.previous.url }}), we created a patch that added support for timers to Vim.  In this article, we will discuss ___.*
 
-In [part one the Vim trilogy]({{ page.previous.previous.url }}), we exhasted all efforts to hack existing features in Vim to create asyncronous, evented IO without horrible side effects.  At the end of [the previous post]({{ page.previous.url }}), we had resigned ourselves to building a patch for Vim that added support for setting and canceling timeouts.  It seemed like the finish line was in sight; after a few minor changes the Floobits Vim Plugin finally worked as expected. Of course, patching Vim wouldn't be that easy.
-
-Maintaining and distrubing a fork of Vim would be a huge undertaking; Vim supports DOS, Amiga, VMS, and win-16 to name just a few of the unpopular ones. Worse yet, Vim has a half dozen common, different packages[macvim, gvim, vim, spf13]. We needed our patch to be accepted into Vim or we would inherit all of those operating systems and distributions.  We were now in the business of making our patch acceptible to the community.
+Maintaining and distrubing a fork of Vim would be a huge undertaking; Vim supports DOS, Amiga, VMS, and win-16 to name just a few of the unpopular OSes. Worse yet, Vim has quite a few different packages inluding [macvim](https://github.com/b4winckler/macvim), [gvim](http://www.vim.org/download.php), [vim proper](http://www.vim.org/) and [spf13](https://github.com/spf13/spf13-vim). We needed our patch to be accepted into Vim or we would inherit all of those operating systems and distributions.  We were now in the business of making our patch acceptible to the community.
 
 Oddly enough, we received practically no feedback about our implemention from the Vim devs.  Apart from the advice to use monotonic timers and change where we put curly braces, we were on our own.
 
@@ -31,7 +30,7 @@ Everything we threw at timers worked as expected apart from one function, :Explo
 first tried to understand it- no debugger, so we had to understand it.
 
 Opening a local directory for exploration uses the same code that handles all remote file io?  
-Maybe we forgot to do some initialization or setup before we called into it so we were really hitting a network timeout?  
+Maybe we forgot to do some initialization or setup before we called into it so we were really hitting a network timeout?
 
 calls to do_cdmline were the same and ubuiquitous throughout the code base, so that couldn't be the cause.
 
@@ -92,4 +91,17 @@ count total (s) self (s) function
 
 None of the extra time is spent in self.
 
-I remembered that our initial implementation in MacVim didn't have this problem- so it has to be how we are calling timeouts.  printf statment next to select calls showed the problem- calling select every 20ms!
+I remembered that our initial implementation in MacVim didn't have this problem- so it has to be how we are calling timeouts.
+
+{% highlight text %}
+if (calling_timeouts)
+{
+	unsigned long long now = get_monotonic_time();
+	printf("now: %llu", now);
+}
+ret = select(maxfd + 1, &rfds, NULL, &efds, tvp);
+{% endhighlight %}
+
+![Debugging Vim](/images/vim.png "Debugging Vim")
+
+###Why is select being called every 20ms?

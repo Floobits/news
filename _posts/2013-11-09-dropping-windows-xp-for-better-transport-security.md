@@ -28,4 +28,4 @@ SSLCipherSuite EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECD
 
 [SSL Labs](https://www.ssllabs.com/ssltest/index.html) has a great tool for testing HTTPS. Compare your results to [ours](https://www.ssllabs.com/ssltest/analyze.html?d=floobits.com&s=54.200.46.41).
 
-If you'd like to know more about our security practices, check out [our security page](https://floobits.com/security/).
+If you'd like to know more about our security practices, check out [our security page](https://floobits.com/security).
