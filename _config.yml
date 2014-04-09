@@ -10,4 +10,5 @@ title: Floobits News
 exclude:
   - build_release.sh
   - deploy.sh
+  - news-*.tar.gz
   - post.sh
