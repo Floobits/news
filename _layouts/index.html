@@ -2,11 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
 {% include head.html %}
 <body>
-  {% include header.html %}
-  <div class="container">
-    {{ content }}
-    {% include footer.html %}
-  </div>
+  <main>
+    {% include header.html %}
+    <div class="content-container">
+      <div class="container">
+      {{ content }}
+      {% include footer.html %}
+      </div>
+    </div>
+  </main>
   {% include ga.html %}
 </body>
 </html>
