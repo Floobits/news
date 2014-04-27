@@ -5,9 +5,9 @@ slug: new-features-webrtc-video-chat-pretty-urls
 published: true
 title: 'New Features: WebRTC Video Chat, Nicer URLs'
 authors:
-  ggreer
+  - ggreer
 categories:
-  Features
+  - Features
 ---
 
 #### WebRTC Video Chat

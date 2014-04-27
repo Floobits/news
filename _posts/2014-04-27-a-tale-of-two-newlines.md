@@ -1,19 +1,26 @@
 ---
-date: '2014-04-18 16:14:29'
+date: '2014-04-27 16:14:29'
 layout: post
 slug: a-tale-of-two-newlines
 published: true
 title: A Tale of Two Newlines
+authors:
+  - ggreer
 categories:
-  Bugs
-  Post-mortem
+  - Bugs
+  - Post-mortem
 ---
 
-Text files; they're the lowest common denominator. Practically anything that runs on electrons can understand them. There's only one tiny wrinkle: newlines.
+Text files; they're the lowest common denominator. Practically anything that runs on electrons can understand them. There's just one tiny wrinkle: newlines.
 
-Not all operating systems and protocols use the same bytes to represent newlines. Unix-based systems use a single line feed (LF) character. Windows uses a carriage return (CR) followed by a line feed.
+Not all operating systems and protocols use the same bytes to represent newlines. Unix-based systems use a single line feed (LF) character. Windows uses a carriage return (CR) followed by a line feed. Since Floobits lets people edit files simultaneously, we have to translate between Windows and Unix newlines.
 
-Since Floobits lets people edit files simultaneously, we have to translate between Windows and Unix newlines.
+At first glance, this seems like a trivial issue: Just detect the user's operating system and use the right newline. But Linux users don't always want LFs. Likewise, Windows users don't always want CRLFs. To fix this, we had to modify our plugins to take into account the OS, the global editor settings, the editor settings for the current buffer, and the file on disk. With all these inputs, we can get as close as possible to "magical" behavior: Users don't notice any problems. Git (with the default config) shows no specious whitespace diffs. It's like shaving: do the job right, and nobody will notice it's been done at all.
+
+There was just one problem: our clever code didn't work. Users complained about files having 
+
+Internally, our protocol uses unix newlines. 
+
 
 explain strategy: use \n internally, each editor decides whether to use windows or unix-style newlines
 

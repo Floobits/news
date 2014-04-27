@@ -5,9 +5,9 @@ slug: new-feature-import-github-repos
 published: false
 title: 'New Feature: Import GitHub Repos'
 authors:
-  ggreer
+  - ggreer
 categories:
-  Features
+  - Features
 ---
 
 Another week, another feature. 
