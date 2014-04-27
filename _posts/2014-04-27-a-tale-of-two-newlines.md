@@ -17,9 +17,9 @@ Not all operating systems and protocols use the same bytes to represent newlines
 
 At first glance, this seems like a trivial issue: Just detect the user's operating system and use the right newline. But Linux users don't always want LFs. Likewise, Windows users don't always want CRLFs. To fix this, we had to modify our plugins to take into account the OS, the global editor settings, the editor settings for the current buffer, and the file on disk. With all these inputs, we can get as close as possible to "magical" behavior: Users don't notice any problems. Git (with the default config) shows no specious whitespace diffs. It's like shaving: do the job right, and nobody will notice it's been done at all.
 
-There was just one problem: our clever code didn't work. Users complained about files having 
+There was just one problem: our clever code didn't work. Users complained about files having extra CRs. Some lines would end in LFCRCR. This made no sense to us.
 
-Internally, our protocol uses unix newlines. 
+Internally, our protocol uses LFs. If any client sends data containing CRs, our server code strips them before applying the text transformation and sending updates to other clients. Clients then insert CRs based on the heuristics ou
 
 
 explain strategy: use \n internally, each editor decides whether to use windows or unix-style newlines
