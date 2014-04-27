@@ -25,8 +25,15 @@
     <div class="post">
       {{ content }}
     </div>
-    {% for author in page.authors %}
-    <div class="author">
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        {% if page.authors %}
+        {% capture authors_size %}{{ page.authors|size }}{% endcapture %}
+        <h3>About the Author{% if authors_size != '1' %}s{% endif %}</h3>
+        {% endif %}
+        {% for author in page.authors %}
+        <div class="author">
       {% if author == "ggreer" %}
         {% include authors/ggreer.html %}
       {% elsif author == "kansface" %}
@@ -34,21 +41,30 @@
       {% elsif author == "bjorn" %}
         {% include authors/bjorn.html %}
       {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-md-6">
+        {% include about.html %}
+      </div>
     </div>
-    {% endfor %}
 
-    <div style="padding-top: 4em;">
-      <hr />
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
       {% if page.previous %}
         <span class="pull-left">
           <a class="nav-left" href="{{ page.previous.url }}">&larr;&nbsp;{{ page.previous.title }}</a>
         </span>
       {% endif %}
+      </div>
+      <div class="col-md-6">
       {% if page.next %}
         <span class="pull-right">
           <a class="nav-right" href="{{ page.next.url }}">{{ page.next.title }}&nbsp;&rarr;</a>
         </span>
       {% endif %}
+      </div>
     </div>
 
   </div>
