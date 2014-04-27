@@ -19,7 +19,7 @@ At first glance, this seems like a trivial issue: Just detect the user's operati
 
 ### The Bug
 
-There was just one problem: our clever code didn't work. Users complained about files having extra CRs. Some lines would end in LFCRCR. This made no sense to us.Internally, our protocol uses LFs. If any client sends data containing CRs, our server code strips them before applying the text transformation and sending updates to other clients. Clients then insert CRs based on the heuristics outlined above. It was almost as if our server code *wasn't* stripping out CRs...
+There was just one problem: our clever code didn't work. Users complained about files having extra CRs. Some lines would end in LFCRCR. This made no sense to us. Internally, our protocol uses LFs. If any client sends data containing CRs, our server code strips them before applying the text transformation and sending updates to other clients. Clients then insert CRs based on the heuristics outlined above. It was almost as if our server code *wasn't* stripping out CRs...
 
 After much experimenting and debugging, we found the bug in this function:
 
