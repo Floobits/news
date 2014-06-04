@@ -3,7 +3,7 @@ rdiscount:
   extensions: [smart]
 paginate: 10
 permalink: /:year/:month/:day/:title/
-pygments: true
+highlighter: pygments
 url: https://news.floobits.com
 author: Floobits
 title: Floobits News
