@@ -1,67 +1,39 @@
-Screen sharing on floobits
+# Screen sharing on floobits
 
-* Screen sharing is really useful
-	* Floobits lets you do lots of cool things with text editors and on the command line, but sometimes you want share other things
-		* debugger output in intellij
-		* documentation on the web
-		* demo desktop application
-		* show performance stats in a GUI application like Activity Monitor
-		* Share profiling information in Chrome’s Web Inspector
-	* Tried Screen Hero
-		* Pros
-			* Fellow YC company we like
-			* Very easy to get started 
-			* Can use our @floobits emails, no Google account requied, but does require registration
-		   * Cons
-			* Found remote being able to manipulate things weird
-			* If remote user had the window focused couldn’t do stuff like copy and paste
-			* Lagged quite a bit for remote, couldn’t follow switching screens or scrolling quickly
-				* There are probably some settings we could tweak to make this better
-			   * Requires an additional app
-			* Not built into Floobits, not deployable to enterprise customers
-	* Tried Hangouts
-		* Pros
-			* Let’s you share screens
-			   * lets you build an app to run Floobits in an iframe
-			* Has lots of cool features not yet easy to build with webrtc
-				* remote audio levels
-					* link to bug on chromium
-		* cons
-			* requires Google account, 
-				* not good for enterprise our behind the enter
-				* people that don’t want to use Google+ 
-				* people that don’t have a Google account
-			* Not built into Floobits, not deployable to enterprise customers
-* Floobits lets you share screens
-	* Show screenshot
-	* Pros
-		* Built into Floobits, deployable to enterprise
-		* Customise it to what we want and need
-	* Cons
-		* only works in chrome
-		* requires extension
-		* still beta
-		* can eat lots of CPU, especially when sharing big screens
-* We share screens using webrtc
-	* we use getUserMedia to get it
-	* this stuff is not well documented
-	* examples and trying hard and failing lots to get it to work
-	* Can hack sdp to reduce bandwidth for webrtc, but for sharing screenshots, details are nice
-* We used to get screen access via getUserMedia on the drive by web
-	* Used *screen*
-	* Could only share entire Desktop
-	* required a flag in chrome settings
-	* turned off without warning
-	* we really missed it when it broke
-* Now we use an extension
-	* Still uses getUserMedia with desktop
-	* chooseDesktopMedia
-	* Lets you pick windows ore the entire screen, just like Hangouts
-	* makes it easier to install
-		* use inline installation
-			* events
-	   * content scripts
-	* background.js
-* You should use it.
-	* You can share your webcam too, audio stream is separate
-	* Show a small screenshot of the sidebar with the webrtc popup visible
+## Floobits is better with screen sharing.
+
+Floobits is very useful for working together on code or the command line, better than screen sharing could ever be, but sometimes we want to share something else on our computer. We might want to share debugger output in IntelliJ or discuss profiling information in Chrome’s Web Inspector while trying to track down an issue on Floobits.com. We use Floobits to build Floobits and what we had just was not enough sometimes. Often we need a way to share screens, and our customers probably do too.
+
+## Google Hangouts
+
+Initially we used Google Hangouts. This helped us not just share screens but also allowed us to hear and see each other. Google Hangouts lets you build applications directly into their product via an embedded iframe and so we integrated Floobits with Hangouts, a feature that still exists today. But while Google Hangouts lets you share screens and provides many features not yet available with WebRTC it was not the best solution. Google Hangouts requires a Google account, one that has been linked with Google+. Requiring a Google account to make full use of Floobits did not seem right to us, especially considering enterprise customers who want to run Floobits behind their firewall. We needed something better than Google Hangouts for sharing screens on Floobits.
+
+## Screenhero
+
+In addition to trying Google Hangouts we also recently experimented a little bit with a fellow YCombinator startup we admire called [Screenhero](http://screenhero.com/). It was very easy to get started using Screenhero, in fact much easier than getting started with Floobits. No Google account was required, but you still had to register an account, yet this was very easy. Screenhero is pretty amazing but we found allowing remote viewers to interact with our desktops too distracting. It may be possible to have multiple people share their screen with each other at the same time with Screenhero but if so it was not obvious as to how to do this. There were also issues with copy and paste not working while remote viewers had Screenhero focused on their side and remote viewers had problems seeing screens while windows were being switched or scrolled through too quickly. The other problem was that Screenhero would not be deployable to enterprise customers. Screenhero is great, but not what was needed to make Floobits better.
+* ## Screen sharing on Floobits
+
+Given that we had already replaced Hangouts with our own WebRTC based video conferencing tools, built directly into Floobits, it only made sense to take advantage of the screen sharing feature that shipped with Chrome. For a time this Chrome feature allowed you to share your screen on Floobits with others. It was a workable solution until Chrome unexpectedly turned this feature off, breaking our product. When it worked it was great. We were able to customize the screen sharing experience to suit our needs and it was deployable to enterprise customers. Screen sharing with Chrome does have problems. It can be demanding on the CPU, especially if you are sharing a large screen. Screen sharing with a browser also only works in Chrome and at the time it required users to enable a flag in their settings which might be a security problem. 
+
+After Chrome disabled screen sharing we really missed it. At the suggestion of others we were able to replace what we had by shipping an extension that took advantage of an extension API called `chooseDesktopMedia`. It still only works in Chrome but now it is much easier to get started using the extension rather than asking users to change chrome flags. Chrome’s ability to provide extensions with inline install URLs makes the process even easier. A simple click will prompt users to install our extension. We were able to replace instructions for users with code that completed the task with a click of a button.
+
+## Technical details of screen sharing with Chrome
+
+Sharing your screen with other users involves using [WebRTC](http://www.html5rocks.com/en/tutorials/webrtc/basics/), a topic beyond the scope of this post. You can find [our WebRTC code](https://floobits.com/Floobits/django-stuff#buf-web/floobits/static/js/fl/webrtc.js) on Floobits. Once you have WebRTC working, adding screen sharing is not such a daunting task provided you know the specifics. [Our chrome extension](https://floobits.com/Floobits/chrome-screenshare#buf-extension/background.js) has very little code. It does a couple of things:
+
+
+* A [content script](https://developer.chrome.com/extensions/content_scripts) replaces a link to install the extension with a link to enable screen sharing.
+	* It facilitates communication between the extension and the web page using HTML5’s [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window.postMessage) and chrome’s [sendMessage](https://developer.chrome.com/extensions/messaging).
+	* The [background.js](https://developer.chrome.com/extensions/background_pages) script is signaled by the web page when the user wants to share screens. It uses [chooseDesktopMedia](https://developer.chrome.com/extensions/desktopCapture) to prompt the user for authorization via a really nifty dialog. The id is then passed to the web page and given to [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia).
+
+The documentation for these features are not great, but examples online helped us out through the rough spots. One particular troubling aspect was `chooseDesktopMedia` provides a very important optional argument that is required if you want to allow a web page to make use of the screen share id that is returned to you. You need to pass in as an argument to `chooseDesktopMedia` an instance of the tab that will be permitted to make the call to `getUserMedia`. It took us a while to figure that out. The error message we got when we did not do this right was not helpful.
+
+For video chatting were able to reduce the bandwidth WebRTC video consumed by modifying the [SDP](http://tools.ietf.org/id/draft-nandakumar-rtcweb-sdp-01.html) that is shipped in our WebRTC side channel. Making this modification for screen sharing was not ideal because you actually want to see details when sharing screens. As an aside, we actually use our own Floobits protocol as the side channel for WebRTC. The same protocol we use to make real time collaboration work across editors.
+
+With the exception of changing the constraints we used with our call to `getUserMedia`, everything worked pretty much as before used the extension. We had to change `chromeMediaSource` from `screen` to `desktop` and add the id provided by `chooseDesktopmedia` to `chromeMediaSourceId`.
+
+## You should check out Floobits
+
+If you think you might want to easily share screens with others and maybe even video chat while editing code together you should give [Floobits](https://floobits.com) a try. It is getting easier to get started with Floobits every day, as making Floobits better for new users is our #1 primary focus and has been for months. We are not where we want to be yet and we know that, and if you have problems while trying us on, let us know. We will jump head over heals to get your setup working for you. Once Floobits works, you might wonder how you ever made it so long without it.  
+
+To use the screen sharing feature you will need edit permissions on a Floobits workspace. If you have edit permissions, you should see an option to video chat on the bottom left in the sidebar on the web editor. After you click this a pop up that appears should have a link to get you started. Please us know if you have any suggestions or questions.
