@@ -9,9 +9,7 @@ authors:
 categories:
 ---
 
-### Floobits is better with screen sharing
-
-Floobits is very useful for working together on code or the command line but sometimes we want to share something else on our computer. We might want to share debugger output in [IntelliJ](https://floobits.com/help/plugins/intellij) or discuss profiling information in Chrome's Web Inspector while trying to track down an issue on Floobits.com. We use Floobits to build Floobits and what we had just was not enough sometimes. Often we need a way to share screens, and our customers probably do too.
+Floobits is very useful for working together on code or the command line, but sometimes we want to share something else on our computer. We might want to share debugger output in [IntelliJ](https://floobits.com/help/plugins/intellij) or discuss profiling information in Chrome's Web Inspector while trying to track down an issue on Floobits.com. We use Floobits to build Floobits and what we had just was not enough sometimes. Often we need a way to share screens, and our customers probably do too.
 
 
 ### Google Hangouts
