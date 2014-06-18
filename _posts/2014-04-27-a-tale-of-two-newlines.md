@@ -3,7 +3,7 @@ date: '2014-04-27 16:14:29'
 layout: post
 slug: a-tale-of-two-newlines
 published: true
-title: A Tale of Two Newlines
+title: 'A Tale of Two Newlines: Carriage Returns, Line Feeds, and JavaScript Hair-Pulling'
 authors:
   - ggreer
 categories:
