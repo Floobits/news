@@ -11,13 +11,12 @@ categories:
   - Tech
 ---
 
-Automated error reporting is an often-overlooked way to improve software. Linters, tests, QA, and pairing can all reduce bugs, but they don't answer the most important question: **Do users encounter errors?** Internal testing simply can't imagine (let alone cover) the myriad ways in which users will break your code. Detecting crashes and reporting them can help find gaps in your testing and QA.
+Automated error reporting is an often-overlooked way to improve software. Linters, tests, QA, and pairing can all reduce bugs, but they don't answer the most important question: **Do users encounter errors?** Internal testing simply can't imagine (let alone discover) the myriad ways in which users will break your code. Detecting and reporting errors gives feedback that can find gaps in your testing and QA. Error reporting also makes our customers happier. Users love it when we contact them, apologize for an error they ran into, and mention that we've shipped a fix.
 
-Error reporting also makes our customers happier. Users love it when we contact them, apologize for an error they ran into, and mention that we've shipped a fix.
-
-We make use of error reporting throughout our service. We receive error reports for our editor plugins, our client-side JavaScript, and our server code. If anything breaks
+We make use of error reporting throughout our software. We receive error reports from our editor plugins, client-side JavaScript, and server-side code. If anything breaks, we know. 
 
 In all cases we receive e-mails when things go wrong and our goal is to fix every error we receive. In each instance we also attempt to identify the user affected by the problem so we can assist if needed and ask questions to help us resolve the problem.
+
 
 
 ## Server side

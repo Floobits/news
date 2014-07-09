@@ -2,7 +2,7 @@
 date: '2014-07-04 21:05:14'
 layout: post
 slug: dear-network-admins-stop-blocking-non-http
-published: false
+published: true
 title: 'Dear Network Admins, Stop Blocking Non-HTTP/HTTPS'
 authors:
     - ggreer
