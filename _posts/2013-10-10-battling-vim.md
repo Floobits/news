@@ -4,6 +4,8 @@ layout: post
 slug: battling-vim
 published: false
 title: battling-vim
+authors:
+  - kansface
 categories:
 ---
 *This article is part III of our trilogy on adding Floobits Support To Vim. In [part one]({{ page.previous.previous.url }}), we attempted to hack Vim to support asyncronous timers.  In [part II]({{ page.previous.url }}), we created a patch that added support for timers to Vim.  In this article, we will discuss ___.*

@@ -10,9 +10,9 @@ categories:
     - PSA
 ---
 
-One of the biggest problems we've had at Floobits is that many networks block outbound connections on ports besides 80 or 443. In other words, all protocols besides HTTP and HTTPS are blocked. It's not uncommon for this to happen in schools, large companies, government offices, and hotels.
+One of the biggest problems we've had at Floobits is that many networks block outbound connections on ports other than 80 and 443. In other words, all protocols besides HTTP and HTTPS are blocked. It's not uncommon for this to happen in schools, large companies, government offices, and hotels.
 
-Recently we released a new major version of our Sublime Text plugin. The biggest feature we added is the ability to detect port blocking and work-around it. If our plugin can't connect to `floobits.com` on port `3448`, it tries `proxy.floobits.com` on port `443`. Building this work-around took weeks of planning and development.
+We recently released new versions of our plugins to address this issue. We now detect port blocking and work-around it. If our plugin can't connect to `floobits.com` on port `3448`, it tries `proxy.floobits.com` on port `443`. Building this took weeks of planning, development, and testing. Time that could have- should have been used to 
 
 Various excuses are made for this censorship. It prevents abuse. It stops people from torrenting. ...... These points are valid, but there are better ways to solve the issues. More importantly, the costs far outweigh the benefits. Unfortunately, these costs are paid by the users, not the network admins.
 

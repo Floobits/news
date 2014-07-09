@@ -4,6 +4,8 @@ layout: post
 slug: what-we've-been-working-on
 published: true
 title: What We've Been Working On
+authors:
+  - ggreer
 categories:
   - Features
 ---

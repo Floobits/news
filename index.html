@@ -18,9 +18,7 @@ title: Floobits News
         {% if post.authors %}
           by
         {% endif %}
-        {% for author in post.authors %}
-          {{ author }}
-        {% endfor %}
+        {{ post.authors | array_to_sentence_string }}
       </small>
     </p>
 

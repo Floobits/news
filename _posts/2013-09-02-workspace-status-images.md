@@ -4,6 +4,8 @@ layout: post
 slug: workspace-status-images
 published: true
 title: Workspace Status Images
+authors:
+  - ggreer
 categories:
   - Features
 ---

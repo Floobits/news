@@ -16,9 +16,7 @@
         {% if page.authors %}
           by
         {% endif %}
-        {% for author in page.authors %}
-          {{ author }}
-        {% endfor %}
+        {{ page.authors | array_to_sentence_string }}
       </small>
     </p>
     <hr />

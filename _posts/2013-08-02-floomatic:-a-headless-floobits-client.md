@@ -4,6 +4,8 @@ layout: post
 slug: floomatic-a-headless-floobits-client
 published: true
 title: 'Floomatic: A Headless Floobits Client'
+authors:
+  - ggreer
 categories:
 ---
 
