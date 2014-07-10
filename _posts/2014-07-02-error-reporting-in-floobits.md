@@ -19,7 +19,7 @@ The specifics of each form of error reporting are explained below, in the hope t
 
 ## Django
 
-We use a customized version of [Django's exception reporting](https://docs.djangoproject.com/en/1.7/howto/error-reporting/). Instead of sending e-mails from Python, errors are added to an [on-disk queue](https://github.com/Floobits/gurgitator). This lets [our error page](https://floobits.com/static/500.html) load sooner, since the HTTP response isn't blocked by sending an e-mail.
+We use a customized version of [Django's exception reporting](https://docs.djangoproject.com/en/1.7/howto/error-reporting/). Instead of sending e-mails from Python, errors are added to an on-disk queue, which our [Gurgitator](https://github.com/Floobits/gurgitator) service consumes. This lets [our error page](https://floobits.com/static/500.html) load sooner, since the HTTP response isn't blocked by sending an e-mail.
 
 
 ## Back-end services
