@@ -20,9 +20,11 @@ Here's the status image for our news workspace:
 
 The HTML looks like this:
 
-    <a href="https://floobits.com/Floobits/news/redirect">
-      <img alt="Floobits status" width="100" height="40" src="https://floobits.com/Floobits/news.png" />
-    </a>
+{% highlight html %}
+<a href="https://floobits.com/Floobits/news/redirect">
+  <img alt="Floobits status" width="100" height="40" src="https://floobits.com/Floobits/news.png" />
+</a>
+{% endhighlight %}
 
 If the workspace is actively being edited, you'll see a green-bordered image and the link will redirect to the Floobits web editor. If not, the image will be grayed-out and the link will redirect to a page containing the workspace info.
 
