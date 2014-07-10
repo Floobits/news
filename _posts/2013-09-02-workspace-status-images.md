@@ -14,14 +14,14 @@ Similar to services such as [Travis-CI](https://travis-ci.org), we've added stat
 
 Here's the status image for our news workspace:
 
-<a href="https://floobits.com/r/Floobits/news/redirect">
-  <img alt="Floobits status" width="80" height="40" src="https://floobits.com/r/Floobits/news.png" />
+<a href="https://floobits.com/Floobits/news/redirect">
+  <img alt="Floobits status" width="100" height="40" src="https://floobits.com/Floobits/news.png" />
 </a>
 
 The HTML looks like this:
 
-    <a href="https://floobits.com/r/Floobits/news/redirect">
-      <img alt="Floobits status" width="80" height="40" src="https://floobits.com/r/Floobits/news.png" />
+    <a href="https://floobits.com/Floobits/news/redirect">
+      <img alt="Floobits status" width="100" height="40" src="https://floobits.com/Floobits/news.png" />
     </a>
 
 If the workspace is actively being edited, you'll see a green-bordered image and the link will redirect to the Floobits web editor. If not, the image will be grayed-out and the link will redirect to a page containing the workspace info.
