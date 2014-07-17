@@ -1,5 +1,5 @@
 ---
-date: '2014-07-04 21:05:14'
+date: '2014-07-17 21:05:14'
 layout: post
 slug: dear-network-admins-stop-blocking-non-http
 published: true
@@ -10,12 +10,14 @@ categories:
     - PSA
 ---
 
-One of the biggest problems we've had at Floobits is that many networks block outbound connections on ports other than 80 and 443. In other words, all protocols besides HTTP and HTTPS are blocked. It's not uncommon for this to happen in schools, large companies, government offices, and hotels.
+One of the biggest problems we've had at Floobits is network filtering. Many network administrators block outbound connections that use protocols besides HTTP/HTTPS. It's not uncommon for this to happen in schools, large companies, government offices, and hotels. This needs to stop.
 
-We recently released new versions of our plugins to address this issue. We now detect port blocking and work-around it. If our plugin can't connect to `floobits.com` on port `3448`, it tries `proxy.floobits.com` on port `443`. Building this took weeks of planning, development, and testing. Time that could have- should have been used to 
+We recently released new versions of our plugins that detect port blocking and work-around it. If our plugins can't connect to `floobits.com` on port `3448`, they try `proxy.floobits.com` on port `443`. All of our plugins communicate over TLS, so our traffic looks like HTTPS. Unless the connection is man-in-the-middled, it should work without users noticing. Building this took weeks of planning, development, and testing. This was time that could have- should have- been used for more productive purposes.
 
-Various excuses are made for this censorship. It prevents abuse. It stops people from torrenting. ...... These points are valid, but there are better ways to solve the issues. More importantly, the costs far outweigh the benefits. Unfortunately, these costs are paid by the users, not the network admins.
+Network admins make various excuses for this censorship. It prevents abuse. It stops people from using protocols associated with piracy. These points are valid, but there are better ways to solve the issues. More importantly, the costs far outweigh the benefits. Unfortunately, these costs are paid by users and developers, not network admins. 
 
-For example, I recently vacationed in Canada with my family. One hotel we stayed at restricted outbound network access. This was particularly frustrating at the time, because my mother was trying to get her mother's headstone made. Because outbound SMTP was blocked, she couldn't change a message on the headstone. Fortunately, she managed to use a different connection. Still, the point is made: one cannot anticipate the full consequences of restricting outbound Internet access.
+For example, I recently vacationed in Canada with my parents and siblings. We stayed at one hotel that restricted outbound network access. This was particularly frustrating at the time, because my grandmother had passed away recently, and my mother was trying to get grandma's headstone made. Because outbound SMTP was blocked, she couldn't change a message on the headstone. She fortunately managed to find a different connection, but the point is made: one cannot fully anticipate the consequences of restricting outbound Internet access. Many users hardly notice the restrictions. Many are annoyed by them. But occasionally, someone's quality of life is seriously affected by port blocking.
 
-The Internet is more than just the web. There are thousands of protocols besides HTTP. Individually, each one may not be popular, but the majority of people use at least one of them.
+The Internet is more than just the web. There are thousands of protocols besides HTTP. Individually, each one may not be popular, but the majority of people use some of them. Blocking these protocols harms everyone. It frustrates users. It forces developers to build work-arounds. It stifles innovation in network protocols. Competent administrators can secure their networks and prevent abuse without resorting to such heavy-handed tactics.
+
+If you are a network administrator, I urge you to reconsider port blocking.
