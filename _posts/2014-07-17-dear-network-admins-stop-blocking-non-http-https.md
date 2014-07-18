@@ -1,5 +1,5 @@
 ---
-date: '2014-07-17 21:05:14'
+date: '2014-07-17 15:05:14'
 layout: post
 slug: dear-network-admins-stop-blocking-non-http
 published: true
@@ -10,9 +10,9 @@ categories:
     - PSA
 ---
 
-One of the biggest problems we've had at Floobits is network filtering. Many network administrators block outbound connections that use protocols besides HTTP/HTTPS. It's not uncommon for this to happen in schools, large companies, government offices, and hotels. This needs to stop.
+One of the biggest problems we've had at Floobits is network filtering. Many network administrators block outbound connections that use protocols besides HTTP/HTTPS. It's not uncommon for this to happen in schools, large companies, government offices, and hotels. This is troublesome.
 
-We recently released new versions of our plugins that detect port blocking and work-around it. If our plugins can't connect to `floobits.com` on port `3448`, they try `proxy.floobits.com` on port `443`. All of our plugins communicate over TLS, so the network traffic looks like HTTPS. Unless the connection is man-in-the-middled, it should work without users noticing. Building this took weeks of planning, development, and testing. This was time that could have- should have- been used for more productive purposes.
+We recently released new versions of our plugins that detect port blocking and work-around it. If our plugins can't connect to `floobits.com` on port `3448`, they try `proxy.floobits.com` on port `443`. All of our plugins communicate over TLS, so the network traffic looks like HTTPS. Unless the connection is man-in-the-middled, it should work without users noticing. Building this took weeks of planning, development, and testing. This was time that should have been used for more productive purposes.
 
 Network admins make various excuses for this censorship. It prevents abuse. It stops people from using protocols associated with piracy. These points are valid, but there are better ways to address them. More importantly, the costs far outweigh the benefits. Unfortunately, these costs are paid by users and developers, not network admins.
 
