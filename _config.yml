@@ -12,3 +12,6 @@ exclude:
   - deploy.sh
   - news-*.tar.gz
   - post.sh
+
+gems:
+  - jekyll-sitemap
