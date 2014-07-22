@@ -14,7 +14,7 @@ We use Floobits to develop Floobits, so we encounter many of the same pain point
 
 In an office, it's easy to tell when someone doesn't want to be interrupted. When they're not "in the zone", you can walk up and ask for help or information. If you want to have a conversation without distracting others, there are meeting rooms. Staying in the same Google+ Hangout or keeping video chat open all day is a very different experience. Unlike in an office, a conversation between two people distracts everyone. We needed a way to talk to each other without forcing our coworkers to leave the video chat or mute their sound. So we built a new feature: Org chat.
 
-<img src="/news/images/Screen Shot 2014-07-22 at 1.56.44 PM.png" style="max-width: 100%;" alt="A typical moment in Floobits chat" title="A typical moment in Floobits chat" />
+<img src="/images/Screen Shot 2014-07-22 at 1.56.44 PM.png" style="max-width: 100%;" alt="A typical moment in Floobits chat" title="A typical moment in Floobits chat" />
 
 Every Floobits organization now has a chat page, which can only be accessed by members of that organization. People using org chat have a picture that updates periodically. Clicking on that picture starts a video chat with that person. You can rope in more people by clicking on more pictures. Clicking on a video stops the chat for that user. Clicking on yourself causes you to leave video chat.<sup>[\[1\]](#ref_1)</sup> There's also text chat for less attention-grabbing communication. This interaction is much closer to being in the same room. In some ways, it's better. People aren't distracted by others conversing nearby.
 
