@@ -64,3 +64,6 @@ To follow specific individuals in NeoVim type `:FlooFollowUser`. To unfollow all
 <img src="/images/follow_user/nvim_follow_user.png" width="500"/>
 <p>Select user</p>
 <img src="/images/follow_user/nvim_select_user.png" width="500"/>
+
+
+That's it! Enjoy!
