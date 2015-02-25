@@ -22,10 +22,12 @@ Lastly, we found that the effort to switch from Node v0.12 to io.js was quite sm
 
 If you're considering upgrading to Node v0.12, give io.js a try. You may be pleasantly surprised at the outcome.
 
+1. <span id="ref_1"></span> If you missed our downtime page, you can always view it [here](https://floobits.com/static/503.html).
+
 ---
+
+<small>
+Thanks goes to [#io.js on Freenode](irc://irc.freenode.net:6667/#io.js) for their suggestions and corrections.
 
 Please note that this post should not be construed as disparaging or insulting Node.js or its contributors. I personally wish them the best of luck and hope they can regain momentum. While we prefer io.js right now, that could easily change. After all, io.js was unheard of only 90 days ago. May the best product win.
-
----
-
-1. <span id="ref_1"></span> If you missed our downtime page, you can always view it [here](https://floobits.com/static/503.html).
+</small>
