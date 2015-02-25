@@ -1,9 +1,9 @@
 ---
 date: '2015-02-23 15:09:46'
 layout: post
-slug: moving-to-io.js
+slug: on-moving-to-io.js
 published: true
-title: Moving to io.js
+title: On Moving to io.js
 authors:
   - ggreer
 categories:
