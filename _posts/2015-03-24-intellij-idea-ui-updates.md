@@ -29,6 +29,6 @@ You can right click and use the context menu to follow or unfollow as well as ki
 
 <img src="/images/intellij/manage_users.png" width="500" alt="Manage users from the context menu."/>
 
-We have also fixed a performance issues associated with highlights. This update should work in the most recent version of IntelliJ IDEA and its forks including PHPStorm, RubyMine, PyCharm, WebStorm, Android Studio, CLion and AppCode.
+We have also fixed a performance issue associated with highlights. This update should work in the most recent version of IntelliJ IDEA and its forks including PHPStorm, RubyMine, PyCharm, WebStorm, Android Studio, CLion and AppCode.
 
 If you notice any performance issues or have any feedback about these UI changes please do not hesitate to email us at support@floobits.com. We worked hard to make sure the new changes performed well and were not too obtrusive, but we are open to what our customers think. We have seen a steady increase in usage of our IntelliJ IDEA plugin and are excited to keep improving it, making it better with each release.
