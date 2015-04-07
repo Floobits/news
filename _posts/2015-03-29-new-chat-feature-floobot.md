@@ -20,4 +20,6 @@ Here's a screenshot of what Floobot typically looks like in org chat:
 
 Currently, Floobot's code is based on our open-source [IRC Floobot](https://github.com/Floobits/floobot). We plan to split out the site parsing code and turn it into a node module. That way, everyone can take advantage of our tool. In the mean time, enjoy the useful descriptions of URLs. And if you have any suggestions or bug reports, please <a id="email_us" href="">email us</a> or [open an issue](https://github.com/Floobits/floobot/issues).
 
+Update: Our site parsing code is now in an open-source module. Feel free to use [Fleece](https://github.com/Floobits/node-fleece) in your own projects.
+
 {% include email.html %}
