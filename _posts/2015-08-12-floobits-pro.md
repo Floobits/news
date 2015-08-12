@@ -1,11 +1,13 @@
 ---
-date: '2015-08-07 12:00:00’
+date: '2015-08-12 12:47:53'
 layout: post
 slug: introducing-floobits-pro
-published: false
-title: introducing-floobits-pro
+published: true
+title: Introducing Floobits Pro
 authors:
   - bjorn
+  - ggreer
+  - kansface
 categories:
   - Announcements
   - Features
