@@ -9,14 +9,16 @@ authors:
 categories:
   - 'Sublime Text'
   - Bugs
+excerpt_separator: <!--more-->
 ---
-
-[Sublime Text](http://www.sublimetext.com/) is my editor of choice. It's powerful, flexible, and accessible. But as much as I like it, Sublime Text has one glaring problem: its plugin API is Python... sort of. That "sort of" is responsible for much frustration and annoyance.
 
 > "Sort of" is such a harmless thing to say... sort of. It's just a filler. Sort of... it doesn't really mean anything. But after certain things, sort of means everything. Like... after "I love you"... or "You're going to live."
 
 — [Demetri Martin](https://en.wikipedia.org/wiki/Demetri_Martin)
 
+[Sublime Text](http://www.sublimetext.com/) is my editor of choice. It's powerful, flexible, and accessible. But as much as I like it, Sublime Text has one glaring problem: its plugin API is Python... sort of. That "sort of" is responsible for much frustration and annoyance.
+
+<!--more-->
 
 For most devs most of the time, writing Sublime Text plugins is scarcely different from writing normal Python. Just import some modules, define your [Sublime commands](https://www.sublimetext.com/docs/3/api_reference.html#sublime_plugin.ApplicationCommand), and you're golden. At Floobits, we learned the hard way that this isn't always the case. Two years ago, after months of extensive development and testing, we finally judged our Sublime Text plugin ready. We released it to the world... only to suffer a deluge of complaints. Many on Windows and Linux couldn't use our plugin. Merely activating our plugin raised exceptions on their systems.
 
