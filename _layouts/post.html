@@ -19,18 +19,16 @@
         {{ page.authors | array_to_sentence_string }}
       </small>
     </p>
+    <hr />
     <div class="post">
-      <hr />
       {{ content }}
     </div>
-
+    <hr />
     <div class="row">
       <div class="col-md-6">
         {% include social_media_bs.html %}
       </div>
     </div>
-
-    <hr />
     <div class="row">
       <div class="col-md-6">
         {% if page.authors %}

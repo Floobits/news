@@ -1,25 +1,13 @@
-<ul class="list-unstyled">
+<ul class="list-inline">
   <li>
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="Floobits" data-dnt="true">Tweet</a>
+    <a href="https://news.ycombinator.com/submitlink?u={{ site.url | uri_escape }}{{ page.url | uri_escape }}&t={{ page.title | uri_escape }}">
+      <img src="/images/hn.png" style="height:20px; width:20px;" />
+      Discuss on Hacker News
+    </a>
   </li>
   <li>
-    <img src="/images/hn.png" style="height:20px; width:20px;" />
-    <a href="https://news.ycombinator.com/submitlink?u={{ site.url | uri_escape }}{{ page.url | uri_escape }}&t={{ page.title | uri_escape }}">Discuss on Hacker News</a>
+    <a href="https://twitter.com/share">
+      <img src="/images/tweet.png" style="height: 20px; width: 56px;" alt="Tweet" />
+    </a>
   </li>
 </ul>
-
-<script type="text/javascript">
-var f = function(d,s,id) {
-  var js,
-    fjs=d.getElementsByTagName(s)[0],
-    p=/^http:/.test(d.location)?'http':'https';
-
-  if (!d.getElementById(id)) {
-      js=d.createElement(s);
-      js.id=id;
-      js.src=p+'://platform.twitter.com/widgets.js';
-      fjs.parentNode.insertBefore(js,fjs);
-  }
-};
-f(document, 'script', 'twitter-wjs');
-</script>

@@ -36,6 +36,4 @@ For Floobits, these errors were deal-breakers. Our plugins need `select()` for a
 
 Our users were happy, but the experience left me disillusioned. [I reported the `import ssl` issue](https://github.com/SublimeTextIssues/Core/issues/177) almost two years ago, but it still hasn't been fixed. At this point, I doubt it ever will be.
 
----
-
 1. <span id="ref_1"></span> This may not error for users of [Package Control](https://packagecontrol.io/), which can install its own ssl module.
