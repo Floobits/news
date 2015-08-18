@@ -1,5 +1,6 @@
 .DS_Store
 .floo
+.jekyll-metadata
 .sublime-project
 _site
 news-*.tar.gz
