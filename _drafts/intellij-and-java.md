@@ -9,7 +9,7 @@ authors:
 categories:
 ---
 
-@: IntelliJ IDEA plugin development and Java 6
+#IntelliJ IDEA plugin development and Java 6
 
 Based on my experience of the last couple of years writing editor plugins for Floobits, IntelliJ IDEA’s plugin system is phenomenal. Extending IntelliJ IDEA seems particularly stellar when compared to other editors. As plugin developer, with IntelliJ you have access to everything. The IDE architecture is very well designed, the core source code is open source and easy to follow and you have all of Java's libraries to make use of to build your plugin. It is quite amazing. There is a lot to rave about, but one of the things that isn’t great is Java versioning. IntelliJ IDEA is a cross-platform Java based editor, and its plugins must share the JRE that the editor runs on. The version of Java you choose for writing your plugin must be compatible with your target audience’s installed Java version. If the user does not have the correct version of Java your plugin will cause a nasty error at start time and your plugin will be automatically disabled. There is no way to specify in the plugin configuration file, the `plugin.xml` file, which version of Java you support to prevent people from installing something that will explode on them. There’s also no easy way to explain to the user when they run into an error what happened or what they could do about it.
 
