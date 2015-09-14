@@ -9,6 +9,7 @@ authors:
 categories:
   - 'Sublime Text'
   - Bugs
+  - Tech
 excerpt_separator: <!--more-->
 ---
 
