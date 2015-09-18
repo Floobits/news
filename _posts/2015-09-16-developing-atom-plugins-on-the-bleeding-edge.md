@@ -2,7 +2,7 @@
 date: '2015-09-16 22:16:22'
 layout: post
 slug: developing-atom-plugins-on-the-bleeding-edge
-published: false
+published: true
 title: 'Developing Atom Plugins Part 1: On the Bleeding Edge'
 authors:
   - ggreer
@@ -14,16 +14,11 @@ categories:
 
 Back in February of 2014, [GitHub announced their new editor: Atom](http://blog.atom.io/2014/02/26/introducing-atom.html). At the time of its release, Atom was slow, buggy, and lacking many popular features. Many wrote it off it as cheap imitation of Sublime Text. In the subsequent 18 months, Atom has improved remarkably. The [recent 1.0 release](http://blog.atom.io/2015/06/25/atom-1-0.html) is a powerful, extensible editor suited for everyday use.
 
-http://blog.atom.io/2014/05/06/atom-is-now-open-source.html
+Atom still isn't as fast or as stable as Sublime Text, but it's catching up quickly. Or to put it more accurately, Sublime Text development has stagnated. Since the first release of Atom, Sublime Text 2 has had *zero* releases. Sublime Text 3 Beta has had 3, one of which was a minor bug fix. Considering the difference in development speed, Atom will almost certainly improve faster than Sublime Text.
 
-Atom still isn't as fast or as stable as Sublime Text, but it's catching up quickly. More accurately, Sublime Text development has stagnated. Since the first release of Atom, Sublime Text 2 has had *zero* releases. Sublime Text 3 Beta has had 3, one of which was a minor bug fix. Considering the difference in development speed, Atom will almost certainly improve faster than Sublime Text.
+That said, Atom's journey hasn't been completely pleasant. Its development process is accurately described by Facebook's slogan: "Move fast and break things." Atom's API has changed drastically, breaking plugin compatibility multiple times. [Even its source license changed(http://blog.atom.io/2014/05/06/atom-is-now-open-source.html).
 
-That said, Atom's journey hasn't been completely pleasant. Its development process is accurately described by FaceBook's slogan: "Move fast and break things." Atom's API has changed drastically, breaking plugin compatibility multiple times.
-
-
-Many of Atom's detractors point out that it's based on a browser: Chromium. While this does increase resource usage and startup time, there are significant advantages to building on top of Chromium:
-
-First, plugins are written in JavaScript, with a little HTML and CSS. Anyone with web development skills won't have a hard time writing Atom plugins.
+Many of Atom's detractors point out that it's based on a browser: Chromium. While this does increase resource usage and startup time, there are significant advantages to building on top of Chromium. Plugins are written in JavaScript, with a little HTML and CSS. Anyone with web development skills won't have a hard time writing Atom plugins.
 
 issues:
 slow ✓
