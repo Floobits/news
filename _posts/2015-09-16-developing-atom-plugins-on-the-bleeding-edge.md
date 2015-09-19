@@ -18,7 +18,7 @@ Atom still isn't as fast or as stable as Sublime Text, but it's catching up quic
 
 That said, Atom's journey hasn't been completely pleasant. Its development process is accurately described by Facebook's slogan: "Move fast and break things." Atom's API has changed drastically, breaking plugin compatibility multiple times. [Even its source license changed(http://blog.atom.io/2014/05/06/atom-is-now-open-source.html).
 
-Many of Atom's detractors point out that it's based on a browser: Chromium. While this does increase resource usage and startup time, there are significant advantages to building on top of Chromium. Plugins are written in JavaScript, with a little HTML and CSS. Anyone with web development skills won't have a hard time writing Atom plugins.
+Many of Atom's detractors point out that it's based on a browser: Chromium. While this does increase resource usage and startup time, there are significant advantages to building on top of Chromium. Plugins are written in JavaScript, with a little HTML and CSS. Anyone with web development skills won't have a hard time writing Atom plugins. Leveraging browser code also makes a new class of features possible. [WebRTC](https://en.wikipedia.org/wiki/WebRTC) is supported in Atom. That allowed us to build video chat into our plugin.
 
 issues:
 slow ✓
@@ -28,7 +28,7 @@ advantages:
 javascript (always bet on js) ✓
   https://discuss.atom.io/t/coffeescript---extends-vs-util-inherits-inheritance-in-js/2536
 it's a browser ✓
-  webrtc
+  webrtc ✓
   its a broswer, sorta:
     same origin policy/HSTS fucks loading stuff in iframes
     you can use a webview, but it doesn't honor postmessage events
