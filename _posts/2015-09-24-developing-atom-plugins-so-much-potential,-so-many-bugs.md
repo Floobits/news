@@ -1,9 +1,9 @@
 ---
-date: '2015-09-18 08:58:38'
+date: '2015-09-24 08:58:38'
 layout: post
 slug: developing-atom-plugins-so-much-potential-so-many-bugs
 published: true
-title: 'Developing Atom Plugins Part 2: So Much Potential, So Many Bugs'
+title: 'Developing Atom Plugins, Part 2: So Much Potential, So Many Bugs'
 categories:
 authors:
   - ggreer
@@ -13,8 +13,7 @@ categories:
   - Tech
 ---
 
-
-[Previously]({% post_url 2015-09-16-developing-atom-plugins-on-the-bleeding-edge %}), I discussed Atom and its progress. While Atom has improved drastically, it's nowhere near perfect. While building our Atom plugin, we ran into many bugs. Some have been fixed, but many still persist.
+[Previously]({% post_url 2015-09-22-developing-atom-plugins-on-the-bleeding-edge %}), I discussed Atom and its progress. While Atom has improved drastically, it's nowhere near perfect. While building our Atom plugin, we ran into many bugs. Some have been fixed, but many still persist.
 
 By far, the biggest annoyance for us was API changes.
 
