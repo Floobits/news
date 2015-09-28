@@ -13,7 +13,11 @@ categories:
   - Tech
 ---
 
-[Previously]({% post_url 2015-09-22-developing-atom-plugins-on-the-bleeding-edge %}), I discussed Atom and its progress. While Atom has improved drastically, it's nowhere near perfect. While building our Atom plugin, we ran into many bugs. Some have been fixed, but many still persist.
+[Previously]({% post_url 2015-09-22-developing-atom-plugins-on-the-bleeding-edge %}), I discussed Atom and its progress. Much of the previous post
+
+While Atom has improved drastically, it's nowhere near perfect. While building our Atom plugin, we ran into many bugs. Some have been fixed, but many still persist.
+
+
 
 By far, the biggest annoyance for us was API changes.
 

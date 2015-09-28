@@ -67,5 +67,4 @@ it's a browser ✓
 The API:
   the good:
     https://atom.io/docs/api/v1.0.7/Disposable#instance-dispose
-
-[Next]({% post_url 2015-09-24-developing-atom-plugins-so-much-potential-so-many-bugs %})
+-->
