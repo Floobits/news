@@ -16,12 +16,12 @@ Back in February of 2014, GitHub [announced their new editor: Atom](http://blog.
 
 ### The History of Atom in 30 Seconds
 
-At the time of its release, Atom was slow, buggy, and lacked basic features. Many wrote it off it as cheap imitation of [Sublime Text](https://www.sublimetext.com/). In the subsequent 18 months, Atom has improved remarkably. The [recent 1.0 release](http://blog.atom.io/2015/06/25/atom-1-0.html) is a powerful, extensible editor suited for everyday use. Atom still isn't as fast or as stable as Sublime Text, but it's catching up quickly. Or to put it more accurately: Sublime Text development has stagnated. Since the first release of Atom, Sublime Text 2 has had *zero* releases. Sublime Text 3 Beta has had three, one of which was a minor bug fix. Considering the difference in development speed, Atom will almost certainly improve faster than Sublime Text.
+At the time of its release, Atom was slow, buggy, and lacked basic features. Many wrote it off it as cheap imitation of [Sublime Text](https://www.sublimetext.com/). In the subsequent 18 months, Atom has improved remarkably. The [recent 1.0 release](http://blog.atom.io/2015/06/25/atom-1-0.html) is a powerful, extensible editor suited for everyday use. Atom still isn't as fast or as stable as Sublime Text, but it's catching up quickly. Or, to put it more accurately: Sublime Text development has stagnated. Since the first release of Atom, Sublime Text 2 has had *zero* releases. Sublime Text 3 Beta has had three, one of which was a minor bug fix. Considering the difference in development speed, Atom will almost certainly improve faster than Sublime Text.
 
 
 ### Not All Rainbows and Unicorns
 
-That said, Atom's journey hasn't been completely pleasant. Its development process is accurately described by Facebook's slogan: "Move fast and break things." Since its initial release, Atom's API has [changed drastically](https://atom.io/docs/v0.186.0/upgrading/upgrading-your-package), breaking package compatibility multiple times. Even the [license has changed](http://blog.atom.io/2014/05/06/atom-is-now-open-source.html). Most of these changes have been for the better, but keeping up with them requires significant time and effort. Hopefully, things will settle down now that Atom is 1.x.
+That said, Atom's journey hasn't been entirely pleasant. Its development process is accurately described by Facebook's slogan: "Move fast and break things." Since its initial release, Atom's API has [changed drastically](https://atom.io/docs/v0.186.0/upgrading/upgrading-your-package), breaking package compatibility multiple times. Even the [license has changed](http://blog.atom.io/2014/05/06/atom-is-now-open-source.html). Most of these changes have been for the better, but keeping up with them requires significant time and effort. Hopefully, things will settle down now that Atom is 1.x.
 
 
 ### It's a Browser... Sort Of

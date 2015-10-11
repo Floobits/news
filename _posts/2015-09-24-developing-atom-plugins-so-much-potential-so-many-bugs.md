@@ -11,21 +11,21 @@ categories:
   - Atom
   - Bugs
   - Tech
+excerpt_separator: <!--more-->
 ---
 
-[Previously]({% post_url 2015-09-22-developing-atom-plugins-on-the-bleeding-edge %}), I discussed Atom and its progress. Much of the previous post
+Atom has improved drastically, but it's nowhere near perfect. While building our Atom plugin, we ran into quite a few bugs. Some have been fixed, but many still persist. [Previously]({% post_url 2015-09-22-developing-atom-plugins-on-the-bleeding-edge %}), I discussed Atom and its progress. Much of that post addressed larger, broader issues. Consider this post an addendum of specifics.
 
-While Atom has improved drastically, it's nowhere near perfect. While building our Atom plugin, we ran into many bugs. Some have been fixed, but many still persist.
+<!--more-->
 
-
-
-By far, the biggest annoyance for us was API changes.
-
-As mentioned before, Atom is based on a browser. While this does let you develop plugins with JavaScript and HTML, it causes some problems. For example: In a browser, submitting a form causes a page reload. Atom behaves the same. So unless you call `event.preventDefault()`, Atom will reload the tab, breaking many UI elements.
+As mentioned before, Atom is based on a browser. While this does have the advantage of writing plugins with JavaScript and HTML, it also causes some problems. For example: In a browser, submitting a form causes a page reload. Atom behaves the same. So unless you call `event.preventDefault()`, Atom will reload the tab, breaking many UI elements.
 
 corrupts all binary files it opens (and saves with no modifications)
 https://github.com/atom/node-pathwatcher/issues/62
 https://github.com/abe33/atom-utils/blob/master/src/mixins/resize-detection.coffee#L25
+
+
+Another big annoyance for us was API changes.
 
 API, the bad:
   package dependencies:
