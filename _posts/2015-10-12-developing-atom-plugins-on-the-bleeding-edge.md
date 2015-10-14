@@ -1,5 +1,5 @@
 ---
-date: '2015-09-22 22:16:22'
+date: '2015-10-12 22:16:22'
 layout: post
 slug: developing-atom-plugins-on-the-bleeding-edge
 published: true
@@ -42,7 +42,10 @@ The Atom devs have done a great job over the past 18 months, but a few conspicuo
 
 Another glaring omission is Atom's lack of GitHub integration. Some extensions are GitHub-specific, but the editor itself has no GitHub features. Built-in GitHub authentication would be useful for many extensions. Instead of setting your GitHub API key/secret in each plugin, Atom could provide it (with appropriate prompting, of course).
 
-If you want a more technical discussion of Atom's current issues, read [part 2]({% post_url 2015-09-24-developing-atom-plugins-so-much-potential-so-many-bugs %}).
+Despite these shortcomings, I've found myself using Atom more and more. It's become a very compelling alternative to Sublime Text.
+
+<br />
+
 
 <!--
 advantages:
