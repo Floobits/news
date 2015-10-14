@@ -46,6 +46,7 @@ Despite these shortcomings, I've found myself using Atom more and more. It's bec
 
 <br />
 
+For a more technical discussion of Atom's current issues, read [part 2]({% post_url 2015-10-14-developing-atom-plugins-so-much-potential-so-many-bugs %}).
 
 <!--
 advantages:

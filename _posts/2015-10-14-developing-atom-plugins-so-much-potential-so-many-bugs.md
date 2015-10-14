@@ -2,7 +2,7 @@
 date: '2015-10-14 08:58:38'
 layout: post
 slug: developing-atom-plugins-so-much-potential-so-many-bugs
-published: false
+published: true
 title: 'Developing Atom Plugins, Part 2: So Much Potential, So Many Bugs'
 categories:
 authors:
