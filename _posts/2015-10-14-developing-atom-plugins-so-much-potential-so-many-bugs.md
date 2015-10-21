@@ -29,23 +29,21 @@ If your package has any visible UI, you're also likely to run into styling confl
 
 ### Packaging
 
-Compared to other editors, Atom's packaging system is *amazing*. Most editors don't even come with a package manager. Instead, users are forced to install third-party managers such as [Package Control](https://github.com/wbond/package_control) or [Vundle](https://github.com/VundleVim/Vundle.vim). Atom's package manager is great for users and developers alike. Users can easily find, install, and update packages. Developers can specify dependencies using the `package.json` format used by [npm](https://www.npmjs.com/). Packages can even [depend on other packages](https://atom.io/docs/latest/behind-atom-interacting-with-other-packages-via-services). That can really come in handy. For example, our Atom package depends on [Term3](https://atom.io/packages/term3). That allowed us to avoid copying a bunch of terminal-related code into our main package source tree. With luck, we'll be able to get our changes merged into [Term2](https://github.com/f/atom-term2) and depend on it instead. If not for Atom's package management, that prospect would be all but hopeless.
+Compared to other editors, Atom's packaging system is *amazing*. Most editors don't even come with a package manager. Instead, users are forced to install third-party managers such as [Package Control](https://github.com/wbond/package_control) or [Vundle](https://github.com/VundleVim/Vundle.vim). Atom's package manager is great for users *and* developers. Users can easily find, install, and update packages. Developers can specify dependencies using [npm](https://www.npmjs.com/)'s `package.json` format. Packages can even [depend on other packages](https://atom.io/docs/latest/behind-atom-interacting-with-other-packages-via-services). That can really come in handy. For example, our Atom package depends on [Term3](https://atom.io/packages/term3). That allowed us to avoid copying a bunch of terminal-related code into our main package's source tree. With luck, we'll be able to get our changes merged into [Term2](https://github.com/f/atom-term2) and depend on it instead. If not for Atom's package management, we would have a complete fork with polluted history. The prospect of merging would be all but hopeless.
 
 Of course, like many parts of Atom, packaging does have a few rough edges. [Packages can load other packages](https://atom.io/docs/api/v1.0.19/PackageManager#instance-enablePackage)... most of the time. If a package uses `activationCommands`, [you're out of luck](https://discuss.atom.io/t/cant-activate-package-in-specs/13672/9). [There are a few undocumented ways to work around this](https://discuss.atom.io/t/can-you-force-the-activation-of-another-package/10885/18), but these hacky solutions are likely to break in minor Atom updates.
 
-Though packages can (sort of) load other packages, they can't install them. Even if your packages specifies another as a dependency, users have to manually install it. This will probably be addressed soon, but it's important to note if you're writing packages today.
+Though packages can (sort of) load other packages, they can't install them. Even if your package specifies another as a dependency, users have to manually install that. This issue will probably be addressed soon, but it's important to note if you're writing packages today.
 
 
 ### The View System
 
 Atom's view system has been a long series of misadventures. Early on, Atom recommended [Space Pen](https://github.com/atom-archive/space-pen
-), which was little more than a wrapper around [JQuery](https://jquery.com/). Then, [Atom moved to React](http://blog.atom.io/2014/07/02/moving-atom-to-react.html). Unfortunately, they haven't kept up with Facebook's React. Because package writers coded their packages against Atom's React, Atom is forced to stay on [an old fork](https://www.npmjs.com/package/react-atom-fork) (multiple versions of React [can't run in the same context](https://github.com/facebook/react/issues/2402)). It's unclear what the will happen to Atom's React, but its future doesn't seem promising. Atom devs have been slowly removing React from core parts of Atom.
-
-More recently, Atom has started to implement parts of their visible UI in [special-purpose HTML tags](https://github.com/atom/atom/issues/5756). This doesn't seem to be the
+), which was little more than a wrapper around [JQuery](https://jquery.com/). Then, [Atom moved to React](http://blog.atom.io/2014/07/02/moving-atom-to-react.html). Unfortunately, they haven't kept up with Facebook's React. Because package writers coded their packages against Atom's React, Atom is forced to stay on [an old fork](https://www.npmjs.com/package/react-atom-fork) (multiple versions of React [can't run in the same context](https://github.com/facebook/react/issues/2402)). It's unclear what the will happen to Atom's React, but its future doesn't seem promising. Atom devs have been slowly removing React from core parts of Atom. More recently, Atom has started to implement parts of their visible UI in [special-purpose HTML tags](https://github.com/atom/atom/issues/5756). This doesn't seem to be the end-game for the view system though. The discussion around this topic has yet to nail down a solution.
 
 To summarize:
 
-<table>
+<table style="width: 450px;">
   <thead>
     <th>Atom View API</th>
     <th>Status</th>
@@ -53,15 +51,15 @@ To summarize:
   <tbody>
     <tr>
       <td>Space Pen</td>
-      <td>[Deprecated](https://github.com/atom/atom-space-pen-views)</td>
+      <td><a href="https://github.com/atom/atom-space-pen-views">Deprecated</a></td>
     </tr>
     <tr>
       <td>React</td>
-      <td>[Deprecated](https://github.com/jgebhardt/react-for-atom#a-single-instance-of-react)</td>
+      <td><a href="https://github.com/jgebhardt/react-for-atom#a-single-instance-of-react">Deprecated</a></td>
     </tr>
     <tr>
       <td>Special DOM elements</td>
-      <td>[Maybe deprecated soon?](https://github.com/atom/atom/issues/3752#issuecomment-60645402)</td>
+      <td><a href="https://github.com/atom/atom/issues/3752#issuecomment-60645402">Maybe deprecated soon?</a></td>
     </tr>
   </tbody>
 </table>
@@ -73,7 +71,7 @@ The API for managing windows is also a mess. For example, `atom.open({'pathsToOp
 
 ### Miscellaneous
 
-Atom's API and internals have changed significantly since its first release, but a few annoyances have persisted. A big one for us has been resize detection. It's very useful to know when a pane was resized. Unfortunately, the only way to do that right now is [inefficient polling](https://github.com/abe33/atom-utils#resizedetection). (See the implementation [here](https://github.com/abe33/atom-utils/blob/master/src/mixins/resize-detection.coffee#L25)).
+Atom's API and internals have changed significantly since its first release, but a few annoyances have persisted. A big one for us has been resize detection. It's very useful to know when a pane was resized. The only way to do that right now is [inefficient polling](https://github.com/abe33/atom-utils#resizedetection). (See the implementation [here](https://github.com/abe33/atom-utils/blob/master/src/mixins/resize-detection.coffee#L25)).
 
 A few of the pernicious issues stem from faults in Atom's architecture. Packages have no isolation from each other, so it's easy for them to step on each other's toes. Styling conflicts are the most common version of this. Much of Atom itself is implemented as packages, so this lack of isolation means misbehaving packages can hang or crash Atom. Fixing this is an immense task, and there's no perfect solution. As Chrome extensions show, isolating packages has its own disadvantages.
 
@@ -81,7 +79,7 @@ One thing that Atom has done a great job of is unbinding event handlers. Their [
 
 ---
 
-While this post may seem critical of Atom, I think Atom is a good editor. It has come a long way in a short time. Hopefully, Atom developers will use this post to improve the editor even more. It has a *ton* of potential.
+This post may seem critical of Atom, but that's not the case. I took the time criticize Atom because I care about it, and I want it to be better. I think Atom is a fine editor with a *ton* of potential. It has come a long way in a short time. Hopefully, Atom developers will use this post to improve it even more.
 
 <!-- we duck type/mock an atom Pane as they don't expose one anywhere to load external html
   https://github.com/Floobits/floobits-atom/blob/master/templates/pane.coffee -->
