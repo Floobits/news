@@ -77,13 +77,13 @@ The API for managing windows is also a mess. For example, `atom.open({'pathsToOp
 
 Atom's API and internals have changed significantly since its first release, but a few annoyances have persisted. A big one for us has been resize detection. It's very useful to know when a pane was resized. Unfortunately, the only way to do that right now is [inefficient polling](https://github.com/abe33/atom-utils#resizedetection). (See the implementation [here](https://github.com/abe33/atom-utils/blob/master/src/mixins/resize-detection.coffee#L25)).
 
-A few of the pernicious issues stem from faults in Atom's architecture. Packages have no isolation from each other, so it's easy for them to step on each other's toes. Styling conflicts are the most common version of this. Much of Atom itself is implemented as packages, so this lack of isolation means misbehaving packages can hang or crash Atom.
+A few of the pernicious issues stem from faults in Atom's architecture. Packages have no isolation from each other, so it's easy for them to step on each other's toes. Styling conflicts are the most common version of this. Much of Atom itself is implemented as packages, so this lack of isolation means misbehaving packages can hang or crash Atom. Fixing this is an immense task, and there's no perfect solution. As Chrome extensions show, isolating packages has its own disadvantages.
+
+One thing that Atom has done a great job of is unbinding event handlers. Their [disposable](https://atom.io/docs/api/v1.0.19/CompositeDisposable) objects make cleanup of event handlers trivial. I wish more JavaScript codebases used disposables.
 
 ---
 
-Atom has the potential
+While this post may seem critical of Atom, I think Atom is a good editor. It has come a long way in a short time. Hopefully, Atom developers will use this post to improve the editor even more. It has a *ton* of potential.
 
-disposable https://atom.io/docs/api/v1.0.19/CompositeDisposable
-
-we duck type/mock an atom Pane as they don't expose one anywhere to load external html
-  https://github.com/Floobits/floobits-atom/blob/master/templates/pane.coffee
+<!-- we duck type/mock an atom Pane as they don't expose one anywhere to load external html
+  https://github.com/Floobits/floobits-atom/blob/master/templates/pane.coffee -->
