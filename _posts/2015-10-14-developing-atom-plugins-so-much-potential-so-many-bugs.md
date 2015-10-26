@@ -4,7 +4,6 @@ layout: post
 slug: developing-atom-plugins-so-much-potential-so-many-bugs
 published: true
 title: 'Developing Atom Packages, Part 2: So Much Potential, So Many Bugs'
-categories:
 authors:
   - ggreer
 categories:
