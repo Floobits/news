@@ -18,7 +18,7 @@ In early September, we started seeing one of our backend services crash with the
 
 Typically, node.js exits with a stack trace. But in this case, the error was at a lower level. Node.js was dying because of an assertion in its Buffer code. The exact function was in [`node_buffer.cc` on line 225](https://github.com/nodejs/node/blob/v4.2.1/src/node_buffer.cc#L225):
 
-{% highlight javascript %}
+{% highlight javascript hl_lines="17" linenos linenostart=209 %}
 MaybeLocal<Object> New(Isolate* isolate,
                        Local<String> string,
                        enum encoding enc) {
