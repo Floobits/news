@@ -48,11 +48,13 @@ MaybeLocal<Object> New(Isolate* isolate,
 }
 {% endhighlight %}
 
-Somehow, `data` was null. The first thing I did was `man realloc`, which gave me this info:
+Somehow, `data` was null. Thinking the `realloc()` on line 224 might have failed, I double-checked memory usage on the servers. They were not in danger of reaching any limits, and crashes didn't seem to depend on memory usage. The service crashed while using 1GB of RAM just as often as it did using 100MB. Dang. Not an easy fix. It was a slim hope anyways. Modern OSes don't return null from `malloc()` and friends.<sup>[\[1\]](#ref_1)</sup>
+
+The next thing I did was `man realloc`, to try and figure out how it could return null. Except for an out-of-memory condition, it wasn't possible. Even passing null to `realloc()` returned a usable chunk of memory:
 
 > If ptr is NULL, realloc() is identical to a call to malloc() for size bytes.  If size is zero and ptr is not NULL, a new, minimum sized object is allocated and the original object is freed.
 
-Apparently, it wasn't possible for `realloc()` to return null. There was simply no way for that function, executed sequentially, to fail in this way. Therefore (I reasoned), the bug must another thread modifying shared state. Probably a hard-to-reproduce race condition. Ugh. Still, I needed to fix the issue. Desiring to know more, I tried to build a reproducible test case.
+So there was simply no way for that function, executed sequentially, to fail in this way. Therefore (I reasoned), the bug must be another thread modifying shared state. Probably a hard-to-reproduce race condition. Ugh. Still, I needed to fix the issue. Desiring to know more, I tried to build a reproducible test case.
 
 Unfortunately, I could only trigger the crash in prod or staging, and only when copying lots of data between instances of our colab service.
 
@@ -68,3 +70,6 @@ base64 encoded bufs are culprit
 
 
 https://github.com/nodejs/node/issues/3496
+
+
+1. <span id="ref_1"></span> Even when a process asks for more memory than is available, modern OSes return a usable pointer. Only when the memory is accessed will the OS jump into action and free memory by [killing processes](http://linux-mm.org/OOM_Killer).
