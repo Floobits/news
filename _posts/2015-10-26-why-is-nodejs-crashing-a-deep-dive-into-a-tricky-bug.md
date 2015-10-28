@@ -1,9 +1,9 @@
 ---
 date: '2015-10-26 09:59:01'
 layout: post
-slug: nodejs-crash
+slug: why-is-nodejs-crashing-a-deep-dive-into-a-tricky-bug
 published: true
-title: nodejs crash
+title: 'Why is Node.js Crashing? A Deep Dive into a Tricky Bug'
 authors:
   - ggreer
 categories:
