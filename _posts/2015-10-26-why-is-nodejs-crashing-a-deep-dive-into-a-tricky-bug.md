@@ -118,10 +118,10 @@ size_t base64_decode_slow(char* dst, size_t dstlen,
 #define V(expr)                                             \
     while (i < srclen) {                                    \
       const uint8_t c = src[i];                             \
-      lo = unbase64(c);                                     \
+      lo = unbase64\(c\);                                     \
       i += 1;                                               \
       if (lo < 64)                                          \
-        break;  /* Legal character. */                      \
+        break;  /\* Legal character. \*/                      \
       if (c == '=')                                         \
         return k;                                           \
     }                                                       \
