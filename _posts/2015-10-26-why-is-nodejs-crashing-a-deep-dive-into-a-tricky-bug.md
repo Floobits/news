@@ -13,15 +13,15 @@ categories:
 excerpt_separator: <!--more-->
 ---
 
-In early September, we started seeing one of our backend services crash with the following error:
+In early September, we started seeing one of our backend services exit with the following error:
 
     2015-09-10_23:28:11.75413 node: ../src/node_buffer.cc:226: v8::MaybeLocal<v8::Object> node::Buffer::New(v8::Isolate*, v8::Local<v8::String>, node::encoding): Assertion `(data) != (nullptr)' failed.
 
-Typically, Node.js exits with a JavaScript stack trace. But in this case, the error was at a lower level. Node.js was dying because of an assertion in its [Buffer](https://nodejs.org/api/buffer.html) code. At worst, creating a new Buffer should throw an exception. This was a crash. This was a Node.js bug.
+Typically, Node.js exits with a JavaScript stack trace. This error was at a lower level. Node.js was dying because of an assertion in its [Buffer](https://nodejs.org/api/buffer.html) code. At worst, creating a new Buffer should throw an exception. This was a crash. This was a Node.js bug.
 
 <!--more-->
 
-The first thing I did was look at the code containing assertion error. This was in [`node_buffer.cc` on line 225](https://github.com/nodejs/node/blob/v4.2.1/src/node_buffer.cc#L225). I've included the entire `Buffer::New()` constructor below:
+The first thing I did was look at the code containing the assertion error. This was in [`node_buffer.cc` on line 225](https://github.com/nodejs/node/blob/v4.2.1/src/node_buffer.cc#L225). I've included the entire `Buffer::New()` constructor below:
 
 {% highlight cpp hl_lines="17" linenos linenostart=209 %}
 MaybeLocal<Object> New(Isolate* isolate,
