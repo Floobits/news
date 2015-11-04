@@ -53,13 +53,13 @@ MaybeLocal<Object> New(Isolate* isolate,
 }
 {% endhighlight %}
 
-Somehow, `data` was `NULL`. Thinking the `realloc()` on line 224 might have failed, I double-checked memory usage on the servers. They were not in danger of reaching any limits, and crashes didn't seem to depend on memory usage. The service crashed while using 1GB of RAM just as often as it did using 100MB. Dang. Not an easy fix. It was a slim hope anyways. Modern OSes don't return `NULL` from `malloc()` and friends.<sup>[\[1\]](#ref_1)</sup>
+Somehow, `data` was `NULL`. Thinking the `realloc()` on line 224 might have failed, I double-checked memory usage on the servers. They were not in danger of reaching any limits, and crashes didn't seem to depend on memory usage. The service crashed while using 1GB of RAM just as often as it did while using 100MB. Dang. Not an easy fix. It was a slim hope anyways. Modern OSes don't return `NULL` from `malloc()` and friends.<sup>[\[1\]](#ref_1)</sup>
 
 The next thing I did was `man realloc`, to try and figure out how it could return `NULL`. Except for an out-of-memory condition, it wasn't possible. Even passing `NULL` to `realloc()` returned a usable chunk of memory:
 
 > If ptr is NULL, realloc() is identical to a call to malloc() for size bytes.  If size is zero and ptr is not NULL, a new, minimum sized object is allocated and the original object is freed.
 
-There was simply no way for that function, executed sequentially, to fail in this way. Therefore (I reasoned), the bug must be another thread modifying shared state. Probably a hard-to-reproduce race condition. Ugh. Still, I needed to fix the issue. Desiring to know more, I tried to build a reproducible test case. But I could only trigger the crash in production and staging, and only when copying lots of data between instances of our service. Having a lot of other stuff to do, I mitigated the issue by reducing the peak rate at which the service copied data.
+There was simply no way for `Buffer::New()`, executed sequentially, to fail in this way. Therefore (I reasoned), the bug must be another thread modifying shared state. Probably a hard-to-reproduce race condition. Ugh. Still, I needed to fix the issue. Desiring to know more, I tried to build a reproducible test case. Annoyingly, I could only trigger the crash in production and staging, and only when copying lots of data between instances of the service. Having a lot of other stuff to do, I mitigated the issue by reducing the peak rate at which the service copied data.
 
 A month later, Matt finally got tired of seeing crash emails. We paired to try and find the underlying cause. When I was explaining the issue to Matt, I pointed out that `realloc()` never returns `NULL`. He double-checked the docs and disagreed. When he linked to the manpage describing `realloc()`'s behavior, it said:
 
@@ -96,7 +96,7 @@ if (actual < length) {
 }
 {% endhighlight %}
 
-I deployed this custom Node.js build to staging, and soon saw crashes immediately preceded by lines such as:
+I deployed this custom Node.js build to staging, and soon saw crashes. The crashes were preceded by lines such as:
 
 {% highlight text %}
 2015-10-17_19:22:45.89086 actual: 0 length: 11518
@@ -104,7 +104,7 @@ I deployed this custom Node.js build to staging, and soon saw crashes immediatel
 
 Yahtzee! We were on the right track. Now how could `StringBytes::Write()` return 0? We both suspected [base64](https://en.wikipedia.org/wiki/Base64)-encoded buffers. Delving into [`string_bytes.cc`](https://github.com/nodejs/node/blob/v4.2.1/src/string_bytes.cc), we saw that `StringBytes::Size()` called `base64_decoded_size()`, which called `base64_decoded_size_fast()`, which basically returned `length / 4 * 3`.<sup>[\[2\]](#ref_1)</sup> At no point did any of these methods check for valid base64 encoded data. They didn't strip whitespace or invalid characters. They just multiplied by 0.75.
 
-It was a different story for `StringBytes::Write()`. That function called `base64_decode()`, which called `base64_decode_fast()`, which could return early with invalid base64 data. In that case, `base64_decode_slow()` is called. Let's take a look at that function, which starts at [line 167 of `string_bytes.cc`](https://github.com/nodejs/node/blob/v4.2.1/src/string_bytes.cc#L167):
+It was a different story for `StringBytes::Write()`. That function called `base64_decode()`, which called `base64_decode_fast()`, which could return early with invalid base64 data. In that case, `base64_decode()` falls back to calling `base64_decode_slow()`. Let's take a look at that function, which starts at [line 167 of `string_bytes.cc`](https://github.com/nodejs/node/blob/v4.2.1/src/string_bytes.cc#L167):
 
 {% highlight cpp linenos hl_lines="16 17" linenostart=167 %}
 template <typename TypeName>
@@ -141,7 +141,7 @@ size_t base64_decode_slow(char* dst, size_t dstlen,
 }
 {% endhighlight %}
 
-This macro-fied code may be a little hard to follow, but the behavior we care about is straightforward. Look at lines 182 and 183. Any `=` in the data causes the function to return early. It doesn't matter if `src` is a megabyte. If the first character is `=`, `k` is still zero when line 183 is hit. Once we figured that out, it wasn't too hard to reproduce the issue in a line of JavaScript. Try this with Node.js (or io.js) from v3.0.0 to v4.2.1:
+This macro-fied code may be a little hard to follow, but the behavior we care about is straightforward. Look at lines 182 and 183. Any "`=`" in the data causes the function to return early. It doesn't matter if `src` is a megabyte. If the first character is "`=`", `k` is still zero when line 183 is hit. Once we figured that out, it wasn't too hard to reproduce the issue in a line of JavaScript. Try this with Node.js (or io.js) from v3.0.0 to v4.2.1:
 
 {% highlight javascript %}
 ggreer@lithium:~% node
@@ -151,9 +151,9 @@ zsh: abort (core dumped)  node
 ggreer@lithium:~%
 {% endhighlight %}
 
-Armed with a one-liner crash, I [reported the issue to Node.js](https://github.com/nodejs/node/issues/3496) and described how I thought it was breaking. It only took a day for [Ben Noordhuis](https://github.com/bnoordhuis) to fix the bug in master. Node.js v4.2.2 and v5.0.0 will have the fix. Mission accomplished!
+Armed with a one-liner crash, I [reported the issue](https://github.com/nodejs/node/issues/3496) and described how I thought it was breaking. It only took a day for [Ben Noordhuis](https://github.com/bnoordhuis) to fix the bug in master. Node.js v4.2.2 and v5.0.0 shipped with the fix. Mission accomplished!
 
-Except, we forgot one thing. Where was this invalid base64 coming from? Why was our back-end service processing it? This post is pretty long, so that will have to wait.
+Except… we didn't answer some important questions: Where was this invalid base64 coming from? Why was our back-end service processing it? Those answers are in [the next post]({% post_url 2015-11-02-bad-base64-a-not-so-tricky-bug %}).
 
 ---
 
