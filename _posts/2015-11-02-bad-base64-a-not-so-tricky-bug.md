@@ -2,7 +2,7 @@
 date: '2015-11-02 12:58:41'
 layout: post
 slug: bad-base64-a-not-so-tricky-bug
-published: true
+published: false
 title: Bad Base64, a Not-so-Tricky Bug
 authors:
   - ggreer
