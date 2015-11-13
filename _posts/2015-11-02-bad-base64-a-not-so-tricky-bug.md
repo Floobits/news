@@ -14,6 +14,12 @@ categories:
 
 Last week, I explained how we found [a bug that caused Node.js to crash when given invalid base64]({% post_url 2015-10-26-why-is-nodejs-crashing-a-deep-dive-into-a-tricky-bug %}). That post was already rather long, so I didn't explain how one of our back-end services was getting invalid base64. Today, I satisfy everyone's curiosity.
 
+## The Key Clue
+
+Noticed logs always dumb data
+
+
+
 ## Our Service Architecture
 
 To understand the issue, one also needs to know a little about our service architecture. Here's an extremely ornate diagram:
@@ -44,21 +50,13 @@ When a client sends its auth info (api key, secret, workspace, etc), the colabal
 
 ## Our Protocol
 
-All Floobits clients use our Realtime Differential Synchronization Protocol (RDSP). Colab slaves use the same protocol to replicate data amongst each other. That way even if a server suffers a hardware failure, everyone's data is safe.
+All Floobits clients use our [Realtime Differential Synchronization Protocol (RDSP)](https://floobits.com/protocol). Colab slaves use the same protocol to replicate data amongst each other. That way even if a server suffers a hardware failure, everyone's data is safe.
 
-You can read more about our protocol [here](), but the key point is that our protocol
+You can read more about our protocol [here](https://floobits.com/protocol), but the key point is that the current version of our protocol uses JSON, which isn't binary safe. Originally, we didn't think it would be necessary to synchronize binary files. After all, who edits those in Sublime Text, Vim, Emacs, etc? But users wanted it, so we implemented it. To get around JSON's limitation, binary files are base64 encoded. Since earlier versions of our plugins didn't understand this change to our protocol, we added a `supported_encodings` field to our auth frame. If that field didn't exist, we defaulted to `utf-8`.
 
+Unfortunately, a bad copy-paste omitted the `supported_encodings` from our own colab code.
 
 
 ## Conclusion
 
-Really, we shouldn't have used our own protocol for back-end replication. While more efficient —and an interesting technical problem to solve— it's not worth the extra complexity. We could have built the same system with [Cassandra]()
-
-Base64
-Supported encodings missing
-Defaulted to UTF8
-Noticed logs always dumb data
-
-realtime differential synchronization protocol
-
-RDSP
+Really, we shouldn't have used our own protocol for back-end replication. While more efficient —and an interesting technical problem to solve— it wasn't worth the extra complexity. We could have built the same system with [Cassandra](http://cassandra.apache.org/) much more quickly.
