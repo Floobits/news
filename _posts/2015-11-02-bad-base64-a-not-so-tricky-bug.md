@@ -32,7 +32,7 @@ As soon as I saw that, I knew what the problem was. The line noise you see is a 
 To understand the issue, one also needs to know a little about our service architecture. Here is an extremely ornate diagram:
 
 <pre style="font-size: 10px; overflow-wrap: none;">
-                         Front-end servers                  Master                   Back-end servers
+                         Front-end servers                  Master                   Slaves
 
                          +-------------+                    +---------+              +--------+
          +-------------> |httpd        |                    |colab    | +----------> |colab   | <-----+
@@ -52,16 +52,18 @@ Internet +-------------> |httpd        |  /    /                        |    ---
 
 All clients connect to our front-end servers. If the request is HTTP(S) (port 80 or 443), Apache httpd handles it. If it's our protocol (port 3448), our colabalancer service handles it. Also, if the HTTP(S) request is a [websocket](https://en.wikipedia.org/wiki/WebSocket), httpd proxies it to colabalancer.
 
-When a client sends its auth info (api key, secret, workspace, etc), the colabalancer asks colab master, "Which slave has workspace X?" When the master responds, the balancer connects to that slave and pipes data between it and the client.
+When a client sends its auth info (api key, secret, workspace, etc), the colabalancer asks colab master, "Which slave has workspace X?" When the master responds, the balancer connects to that slave and pipes data between it and the client. The master also makes sure that there are multiple up-to-date copies of each workspace. If a workspace's replication count is low, it tells a slave to copy the workspace from another slave. That way if a server suffers a hardware failure, everyone's data is safe.
 
 
 ## Our Protocol
 
-All Floobits clients use our [Realtime Differential Synchronization Protocol (RDSP)](https://floobits.com/protocol). Colab slaves use the same protocol to replicate data amongst each other. That way even if a server suffers a hardware failure, everyone's data is safe.
+All Floobits clients use our [Realtime Differential Synchronization Protocol (RDSP)](https://floobits.com/protocol). Colab slaves use the same protocol to replicate data amongst each other.
 
-You can read more about our protocol [here](https://floobits.com/protocol), but the key point is that the current version of our protocol uses JSON, which isn't binary safe. Originally, we didn't think it would be necessary to synchronize binary files. After all, who edits those in Sublime Text, Vim, Emacs, etc? But users wanted it, so we implemented it. To get around JSON's limitation, binary files are base64 encoded. Since earlier versions of our plugins didn't understand this change to our protocol, we added a `supported_encodings` field to our auth frame. If that field didn't exist, we defaulted to `utf-8`.
+You can read more about our protocol [here](https://floobits.com/protocol), but the key point is that the current version of our protocol uses JSON, which isn't binary safe. Originally, we didn't think it would be necessary to synchronize binary files. After all, who edits binary files in Sublime Text, Vim, or Emacs? But users wanted it, so we implemented it. To get around JSON's limitation, binary files are base64 encoded. Since earlier versions of our plugins didn't understand this change to our protocol, we added a `supported_encodings` field to our auth frame. If that field doesn't exist, we default to `utf-8` as the only supported encoding.
 
-Unfortunately, a bad copy-paste omitted the `supported_encodings` from our own colab code.
+Now guess which field was accidentally removed in our colab client code.
+
+Yeah, `supported_encodings`. :(
 
 
 ## Conclusion
