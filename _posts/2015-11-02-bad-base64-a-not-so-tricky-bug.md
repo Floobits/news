@@ -61,11 +61,21 @@ All Floobits clients use our [Realtime Differential Synchronization Protocol (RD
 
 You can read more about our protocol [here](https://floobits.com/protocol), but the key point is that the current version of our protocol uses JSON, which isn't binary safe. Originally, we didn't think it would be necessary to synchronize binary files. After all, who edits binary files in Sublime Text, Vim, or Emacs? But users wanted it, so we implemented it. To get around JSON's limitation, binary files are base64 encoded. Since earlier versions of our plugins didn't understand this change to our protocol, we added a `supported_encodings` field to our auth frame. If that field doesn't exist, we default to `utf-8` as the only supported encoding.
 
-Now guess which field was accidentally removed in our colab client code.
+Now guess which field was accidentally removed in our colab client code. That's right, `supported_encodings`. :(
 
-Yeah, `supported_encodings`. :(
+
+## Piecing it Together
+
+Here's how the whole mess went down, step by step:
+
+1. Colab master notices workspace 123 has a low replication count. Master picks candidates based on load and disk usage. It then tells slave01, "Fetch workspace 123 from slave00."
+1. slave01 connects to slave00. It sends no `supported_encodings`, so slave00 thinks, "Oh. This client only supports utf8."
+1. After authing and receiving `room_info` for workspace 123, slave01 sees that its copy of buffer 456 is out of date. It tells slave00, "Give me buffer 456"
+1. Unfortunately, buffer 456 is binary. Slave00 dutifully sends the utf8-encoded (and now corrupted) buffer to 01.
+1. Slave01 tries to decode the utf8-encoded buffer as if it were base64.
+1. Node.js crashes due to a bug in its base64 decoder.
 
 
 ## Conclusion
 
-Really, we shouldn't have used our own protocol for back-end replication. While more efficient —and an interesting technical problem to solve— it wasn't worth the extra complexity. We could have built the same system with [Cassandra](http://cassandra.apache.org/) much more quickly.
+This was Really, we shouldn't have used our own protocol for back-end replication. While more efficient —and an interesting technical problem to solve— it wasn't worth the extra complexity. We could have built the same system with [Cassandra](http://cassandra.apache.org/) much more quickly.
