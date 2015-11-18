@@ -75,7 +75,11 @@ Here's how the whole mess went down, step by step:
 1. Slave01 tries to decode the utf8-encoded buffer as if it were base64.
 1. Node.js crashes due to a bug in its base64 decoder.
 
+It may not sound too complicated when put that way, but troubleshooting this issue was very difficult. Because Node.js was crashing, most of our diagnostic and debugging tools were useless. There was no exception to catch, no error callback, no debug port we could attach to. As [our previous post describes]({% post_url 2015-10-26-why-is-nodejs-crashing-a-deep-dive-into-a-tricky-bug %}), it took a lot of thought, logging, and luck to track down the crash.
+
 
 ## Conclusion
 
-This was Really, we shouldn't have used our own protocol for back-end replication. While more efficient —and an interesting technical problem to solve— it wasn't worth the extra complexity. We could have built the same system with [Cassandra](http://cassandra.apache.org/) much more quickly.
+Looking back, there were many ways we could have avoided this bug: better tests, more in-depth code reviews, static typing, etc. I think the real lesson to learn is more specific: We shouldn't have used our own protocol for back-end replication. While it is more efficient —and an interesting technical problem to solve— it wasn't worth the extra complexity and potential bugs. We could have saved time and sanity building the same system with a battle-hardend system like [Cassandra](http://cassandra.apache.org/).
+
+So if you're ever thinking of making your own distributed data store, perhaps... reconsider.
