@@ -1,121 +1,118 @@
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  {% if page.title == "Floobits News" %}
-  <title>Floobits News</title>
-  {% else %}
-  <title>Floobits News: {{ page.title }}</title>
-  {% endif %}
-  <meta name="author" content="Floobits" />
-  <meta name="viewport" content="width=1000" />
-  <link rel="shortcut icon" href="https://floobits.com/favicon.ico" />
-  <link rel="canonical" href="{{ site.url }}{{ page.url | split:"index.html" | first }}" />
-  <link rel="me" href="https://twitter.com/Floobits" />
-  <link rel="alternate"  type="application/atom+xml" href="/feed.atom" title="Floobits News" />
-  <link id="main-css" rel="stylesheet" type="text/css" media="all" href="https://floobits.com/static/css/build/main_v2.css">
-  <style type="text/css">
-  .container {
-    max-width: 700px;
-    margin: auto;
-  }
-  .post {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 16px;
-    max-width: 700px;
-    color: #333;
-  }
-  .author {
-    margin-bottom: 15px;
-  }
-  .post p {
-    margin: 15px 0 30px 0;
-  }
-  .post img {
-    max-width: 100%;
-  }
-  code {
-    font-family: Menlo, "Deja Vu Sans Mono", Consolas, monospace;
-    background-color: inherit;
-  }
-  pre {
-    line-height: 120%;
-    padding: 0.5em;
-    overflow: auto;
-    background: inherit;
-    font-size: 14px;
-  }
-  .highlight {
-    background-color: #ffffdd;
-    margin: 1em 0;
-  }
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+{% if page.title == "Floobits News" %}
+<title>Floobits News</title>
+{% else %}
+<title>Floobits News: {{ page.title }}</title>
+{% endif %}
+<meta name="author" content="Floobits" />
+<meta name="viewport" content="width=1000" />
+<link rel="shortcut icon" href="https://floobits.com/favicon.ico" />
+<link rel="canonical" href="{{ site.url }}{{ page.url | split:"index.html" | first }}" />
+<link rel="me" href="https://twitter.com/Floobits" />
+<link rel="alternate"  type="application/atom+xml" href="/feed.atom" title="Floobits News" />
+<link id="main-css" rel="stylesheet" type="text/css" media="all" href="https://floobits.com/static/css/build/main_v2.css">
+<style type="text/css">
+.container {
+  max-width: 700px;
+  margin: auto;
+}
+.post {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  max-width: 700px;
+  color: #333;
+}
+.author {
+  margin-bottom: 15px;
+}
+.post p {
+  margin: 15px 0 30px 0;
+}
+.post img {
+  max-width: 100%;
+}
+code {
+  font-family: Menlo, "Deja Vu Sans Mono", Consolas, monospace;
+  background-color: inherit;
+}
+pre {
+  line-height: 120%;
+  padding: 0.5em;
+  overflow: auto;
+  background: inherit;
+  font-size: 14px;
+}
+.highlight {
+  background-color: #ffffdd;
+  margin: 1em 0;
+}
 
-  /* Generated with pygments using the solarized style: */
-  .hll { background-color: #ffffcc }
-  .c { color: #93a1a1; font-style: italic } /* Comment */
-  .g { color: #d33682 } /* Generic */
-  .k { color: #859900 } /* Keyword */
-  .l { color: #2aa198 } /* Literal */
-  .n { color: #268bd2 } /* Name */
-  .cm { color: #93a1a1; font-style: italic } /* Comment.Multiline */
-  .cp { color: #93a1a1; font-style: italic } /* Comment.Preproc */
-  .c1 { color: #93a1a1; font-style: italic } /* Comment.Single */
-  .cs { color: #93a1a1; font-style: italic } /* Comment.Special */
-  .gd { color: #d33682 } /* Generic.Deleted */
-  .ge { color: #d33682 } /* Generic.Emph */
-  .gr { color: #d33682 } /* Generic.Error */
-  .gh { color: #d33682 } /* Generic.Heading */
-  .gi { color: #d33682 } /* Generic.Inserted */
-  .go { color: #d33682 } /* Generic.Output */
-  .gp { color: #d33682 } /* Generic.Prompt */
-  .gs { color: #d33682 } /* Generic.Strong */
-  .gu { color: #d33682 } /* Generic.Subheading */
-  .gt { color: #d33682 } /* Generic.Traceback */
-  .kc { color: #859900 } /* Keyword.Constant */
-  .kd { color: #859900 } /* Keyword.Declaration */
-  .kn { color: #dc322f } /* Keyword.Namespace */
-  .kp { color: #859900 } /* Keyword.Pseudo */
-  .kr { color: #859900 } /* Keyword.Reserved */
-  .kt { color: #859900 } /* Keyword.Type */
-  .ld { color: #2aa198 } /* Literal.Date */
-  .m { color: #2aa198 } /* Literal.Number */
-  .s { color: #2aa198 } /* Literal.String */
-  .na { color: #268bd2 } /* Name.Attribute */
-  .nb { color: #cb4b16 } /* Name.Builtin */
-  .nc { color: #cb4b16 } /* Name.Class */
-  .no { color: #268bd2 } /* Name.Constant */
-  .nd { color: #268bd2 } /* Name.Decorator */
-  .ni { color: #268bd2 } /* Name.Entity */
-  .ne { color: #268bd2 } /* Name.Exception */
-  .nf { color: #268bd2 } /* Name.Function */
-  .nl { color: #268bd2 } /* Name.Label */
-  .nn { color: #268bd2 } /* Name.Namespace */
-  .nx { color: #268bd2 } /* Name.Other */
-  .py { color: #268bd2 } /* Name.Property */
-  .nt { color: #268bd2 } /* Name.Tag */
-  .nv { color: #268bd2 } /* Name.Variable */
-  .ow { color: #859900 } /* Operator.Word */
-  .w { color: #586e75 } /* Text.Whitespace */
-  .mf { color: #2aa198 } /* Literal.Number.Float */
-  .mh { color: #2aa198 } /* Literal.Number.Hex */
-  .mi { color: #2aa198 } /* Literal.Number.Integer */
-  .mo { color: #2aa198 } /* Literal.Number.Oct */
-  .sb { color: #2aa198 } /* Literal.String.Backtick */
-  .sc { color: #2aa198 } /* Literal.String.Char */
-  .sd { color: #2aa198 } /* Literal.String.Doc */
-  .s2 { color: #2aa198 } /* Literal.String.Double */
-  .se { color: #2aa198 } /* Literal.String.Escape */
-  .sh { color: #2aa198 } /* Literal.String.Heredoc */
-  .si { color: #2aa198 } /* Literal.String.Interpol */
-  .sx { color: #2aa198 } /* Literal.String.Other */
-  .sr { color: #2aa198 } /* Literal.String.Regex */
-  .s1 { color: #2aa198 } /* Literal.String.Single */
-  .ss { color: #2aa198 } /* Literal.String.Symbol */
-  .bp { color: #cb4b16 } /* Name.Builtin.Pseudo */
-  .vc { color: #268bd2 } /* Name.Variable.Class */
-  .vg { color: #268bd2 } /* Name.Variable.Global */
-  .vi { color: #268bd2 } /* Name.Variable.Instance */
-  .il { color: #2aa198 } /* Literal.Number.Integer.Long */
-
-  </style>
-  <script type="text/javascript" src="https://floobits.com/static/js/extern/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="https://floobits.com/static/js/extern/bootstrap-3.3.5.min.js"></script>
-</head>
+/* Generated with pygments using the solarized style: */
+.hll { background-color: #ffffcc }
+.c { color: #93a1a1; font-style: italic } /* Comment */
+.g { color: #d33682 } /* Generic */
+.k { color: #859900 } /* Keyword */
+.l { color: #2aa198 } /* Literal */
+.n { color: #268bd2 } /* Name */
+.cm { color: #93a1a1; font-style: italic } /* Comment.Multiline */
+.cp { color: #93a1a1; font-style: italic } /* Comment.Preproc */
+.c1 { color: #93a1a1; font-style: italic } /* Comment.Single */
+.cs { color: #93a1a1; font-style: italic } /* Comment.Special */
+.gd { color: #d33682 } /* Generic.Deleted */
+.ge { color: #d33682 } /* Generic.Emph */
+.gr { color: #d33682 } /* Generic.Error */
+.gh { color: #d33682 } /* Generic.Heading */
+.gi { color: #d33682 } /* Generic.Inserted */
+.go { color: #d33682 } /* Generic.Output */
+.gp { color: #d33682 } /* Generic.Prompt */
+.gs { color: #d33682 } /* Generic.Strong */
+.gu { color: #d33682 } /* Generic.Subheading */
+.gt { color: #d33682 } /* Generic.Traceback */
+.kc { color: #859900 } /* Keyword.Constant */
+.kd { color: #859900 } /* Keyword.Declaration */
+.kn { color: #dc322f } /* Keyword.Namespace */
+.kp { color: #859900 } /* Keyword.Pseudo */
+.kr { color: #859900 } /* Keyword.Reserved */
+.kt { color: #859900 } /* Keyword.Type */
+.ld { color: #2aa198 } /* Literal.Date */
+.m { color: #2aa198 } /* Literal.Number */
+.s { color: #2aa198 } /* Literal.String */
+.na { color: #268bd2 } /* Name.Attribute */
+.nb { color: #cb4b16 } /* Name.Builtin */
+.nc { color: #cb4b16 } /* Name.Class */
+.no { color: #268bd2 } /* Name.Constant */
+.nd { color: #268bd2 } /* Name.Decorator */
+.ni { color: #268bd2 } /* Name.Entity */
+.ne { color: #268bd2 } /* Name.Exception */
+.nf { color: #268bd2 } /* Name.Function */
+.nl { color: #268bd2 } /* Name.Label */
+.nn { color: #268bd2 } /* Name.Namespace */
+.nx { color: #268bd2 } /* Name.Other */
+.py { color: #268bd2 } /* Name.Property */
+.nt { color: #268bd2 } /* Name.Tag */
+.nv { color: #268bd2 } /* Name.Variable */
+.ow { color: #859900 } /* Operator.Word */
+.w { color: #586e75 } /* Text.Whitespace */
+.mf { color: #2aa198 } /* Literal.Number.Float */
+.mh { color: #2aa198 } /* Literal.Number.Hex */
+.mi { color: #2aa198 } /* Literal.Number.Integer */
+.mo { color: #2aa198 } /* Literal.Number.Oct */
+.sb { color: #2aa198 } /* Literal.String.Backtick */
+.sc { color: #2aa198 } /* Literal.String.Char */
+.sd { color: #2aa198 } /* Literal.String.Doc */
+.s2 { color: #2aa198 } /* Literal.String.Double */
+.se { color: #2aa198 } /* Literal.String.Escape */
+.sh { color: #2aa198 } /* Literal.String.Heredoc */
+.si { color: #2aa198 } /* Literal.String.Interpol */
+.sx { color: #2aa198 } /* Literal.String.Other */
+.sr { color: #2aa198 } /* Literal.String.Regex */
+.s1 { color: #2aa198 } /* Literal.String.Single */
+.ss { color: #2aa198 } /* Literal.String.Symbol */
+.bp { color: #cb4b16 } /* Name.Builtin.Pseudo */
+.vc { color: #268bd2 } /* Name.Variable.Class */
+.vg { color: #268bd2 } /* Name.Variable.Global */
+.vi { color: #268bd2 } /* Name.Variable.Instance */
+.il { color: #2aa198 } /* Literal.Number.Integer.Long */
+</style>
+<script type="text/javascript" src="https://floobits.com/static/js/extern/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="https://floobits.com/static/js/extern/bootstrap-3.3.5.min.js"></script>
