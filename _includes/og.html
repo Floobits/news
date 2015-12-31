@@ -1,9 +1,7 @@
 <meta property="og:title" content="{{ page.title }}" />
 <meta property="og:url" content="{{ site.url }}{{ page.url | split:"index.html" | first }}" />
 <meta property="og:type" content="article" />
-{% if page.date %}
-<meta property="og:article:published_time" content="{{ page.date }}" />
-{% endif %}
-{% if page.image %}
-<meta property="og:image" content="{{ page.image }}" />
-{% endif %}
+{% if page.date %}<meta property="og:article:published_time" content="{{ page.date }}" />{% endif %}
+{% if page.image %}<meta property="og:image" content="{{ page.image }}" />{% endif %}
+{% if page.description %}<meta property="og:description" content="{{ page.description | strip_html | truncate: 199, '…' }}" />
+{% elsif page.excerpt %}<meta property="og:description" content="{{ page.excerpt | strip_html | truncate: 199, '…' }}" />{% endif %}
