@@ -1,6 +1,7 @@
-markdown: rdiscount
-rdiscount:
-  extensions: [smart]
+# Jekyll 3 seems to not interact well with rdiscount/discount. Use default markdown processor for now.
+# markdown: rdiscount
+# rdiscount:
+#   extensions: [smart]
 paginate: 10
 permalink: /:year/:month/:day/:title/
 highlighter: pygments
