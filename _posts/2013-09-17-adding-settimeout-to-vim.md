@@ -20,6 +20,7 @@ After some deliberation, we decided to build a JavaScript-style [`setTimeout()`]
 
 
 <br class="separator" />
+
 ### Understanding Vim
 
 Step 0 was to clone Vim and start poking around. The Vim codebase is intimidating, to put it mildly. A quarter-century of development has created a text editor that, while powerful and extensible, is not without cruft. Vim was originally written for Amiga, and `os_amiga.c` still exists. There appears to be support for VMX, 16-bit Windows, BeOS, and even MS-DOS.
@@ -94,6 +95,7 @@ which calls:
 
 
 <br class="separator" />
+
 ### Settimeout
 
 Our desired API was simple. The plan was to make three new Vimscript functions:
@@ -117,6 +119,7 @@ canceltimeout(timeout_id)
 ...would cancel the timeout. Nothing too crazy there.
 
 <br class="separator" />
+
 ### Timeouts
 
 Representing timeouts is pretty straightforward. Timeouts are run in order, so a [linked-list](http://en.wikipedia.org/wiki/Linked_list) sorted by time makes a lot of sense. There are more efficient data structures for timeouts, but this is a decent first-pass.
@@ -202,6 +205,7 @@ Now all we have to do is run `call_timeouts()` often enough and the job is done!
 
 
 <br class="separator" />
+
 ### Select Loops
 
 Vim's `RealWaitForChar()` can take a timeout, or it can block until there's user input. The initial plan was to put a loop in `RealWaitForChar()` and periodically run `call_timeouts()` while waiting for user input.
@@ -239,6 +243,7 @@ This loop runs `call_timeouts()` every 100 milliseconds, or more often if the us
 
 
 <br class="separator" />
+
 ### Submitting the Patch
 
 Once we thought our work was ready for others to see, [we posted the patch to Vim-dev](https://groups.google.com/d/msg/vim_dev/-4pqDJfHCsM/LkYNCpZjQ70J). After some healthy discussion (and a little bikeshedding), we followed some suggestions to improve our patch. The biggest change was implementing cross-platform monotonic timers. It's often forgotten that `gettimeofday()` is not required to increase. A user can change the clock, causing timeouts to be called too early or too late. Worse, services like [`ntpd`](http://en.wikipedia.org/wiki/Ntpd) can tweak the system clock without the user noticing. There is no cross-platform monotonic clock API, so we had to write code specific to Linux, OS X, BSD, and Windows.

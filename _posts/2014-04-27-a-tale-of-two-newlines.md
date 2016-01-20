@@ -36,7 +36,7 @@ TextBuffer.prototype.normalize = function (state) {
 };
 {% endhighlight %}
 
-Can you spot the bug? It's subtle. You could stare at that function for hours without seeing the problem. It requires knowledge of how JavaScript's <code>[String.replace()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace)</code> works:
+Can you spot the bug? It's subtle. You could stare at that function for hours without seeing the problem. It requires knowledge of how JavaScript's [`String.replace()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) works:
 
 {% highlight text %}
 ggreer@carbon:~% node
