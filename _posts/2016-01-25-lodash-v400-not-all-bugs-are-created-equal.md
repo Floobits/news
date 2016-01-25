@@ -1,5 +1,5 @@
 ---
-date: '2016-01-26 00:58:28'
+date: '2016-01-25 00:58:28'
 layout: post
 slug: lodash-v400-not-all-bugs-are-created-equal
 published: true
@@ -12,19 +12,13 @@ categories:
   - Tech
 ---
 
-On January 13th (a couple weeks ago), Lodash v4.0 [was released](https://github.com/lodash/lodash/releases/tag/4.0.0). After waiting a week for others to shake out the bugs, I branched, bumped the dependency, and fixed compatibility issues. I tried [lodash-migrate](https://github.com/lodash/lodash-migrate), but 
+On January 13th (two weeks ago), Lodash v4.0 [was released](https://github.com/lodash/lodash/releases/tag/4.0.0). After waiting a week for others to shake out the bugs, I branched our projects, bumped the lodash dependency, and fixed compatibility issues. I tried [lodash-migrate](https://github.com/lodash/lodash-migrate), but it wasn't particularly useful. Since it works by running all lodash functions twice (once with the old version and once with the new), any code with side effects will trigger a false positive or just break. Instead, I 
 
-lodash-migrate: not effective. side-effects
+After reviewing, testing, and manually poking around after deploying to staging, I deployed the new release to prod. Success!
 
-problem: high load on backend servers
+...or maybe not. Soon after deploying to prod, I noticed increased load on our back-end servers. When I ssh'd in to diagnose the issue, I saw that our back-end was replicating data like crazy. This didn't endanger the data, but it was incredibly wasteful. Digging deeper, I noticed that if a single buffer in a workspace was changed, the entire contents of the workspace were copied during the next replication pass.
 
-wtf?
-
-look into it:
-replication is going crazy
-every buffer in a workspace gets copied each time
-
-code
+I went back to my editor and looked at the code responsible:
 
 {% highlight javascript %}
 ...
@@ -50,6 +44,8 @@ if (settings.log_data) {
 to_fetch.push(rbuf);
 ...
 {% endhighlight %}
+
+
 
 keys were the same
 added logging. (
