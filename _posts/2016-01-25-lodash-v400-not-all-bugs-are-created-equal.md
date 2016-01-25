@@ -20,7 +20,7 @@ After reviewing, testing, and manually poking around after deploying to staging,
 
 I went back to my editor and looked at the code responsible:
 
-{% highlight javascript %}
+{% highlight javascript linenos linenostart=187 %}
 ...
 let local_buf = local_bufs[rbuf.id];
 rbuf.deleted = !!rbuf.deleted;
@@ -45,30 +45,24 @@ to_fetch.push(rbuf);
 ...
 {% endhighlight %}
 
+I could reproduce the issue on staging, so I enabled debug logging and data logging. I immediately saw that not only did `rbuf` and `local_buf` have the keys, they also had the same the data! What was going on?! The only thing that changed was lodash, so I opened a REPL and double-checked the behavior of `_.isEqual()`:
 
-
-keys were the same
-added logging. (
-    log.debug("local:  %s", JSON.stringify(local_buf));
-    log.debug("remote: %s", JSON.stringify(rbuf));
-) deployed to test cluster
-
-stringified json was the same. WTF?!?!
-
-> require("lodash").isEqual({"a": "a", "b": "b"}, {"b": "b", "a": "a"})
-false
-
-WTF?!
-
-Try with same order:
-
+{% highlight text %}
 > require("lodash").isEqual({"a": "a", "b": "b"}, {"a": "a", "b": "b"})
 true
+> require("lodash").isEqual({"a": "a", "b": "b"}, {"b": "b", "a": "a"})
+false
+{% endhighlight %}
 
-Double-check that order in JS objects doesn't matter. (correct)
+"What in the hell?", I said. I ran that line (and ones like it) a dozen times. I triple-checked the JS objects I was comparing. I *had* to be making a mistake. I thought, "This can't be a problem with lodash." I double-checked the ECMA spec to make sure object keys aren't ordered. (They're not.) I installed lodash 3 and re-ran the offending line in a REPL:
 
-Prepare to submit bug report to Lodash. Search existing issues.
+{% highlight text %}
+> require("lodash").isEqual({"a": "a", "b": "b"}, {"b": "b", "a": "a"})
+true
+{% endhighlight %}
 
-Find https://github.com/lodash/lodash/issues/1758
+At this point, I was pretty sure this was a bug in lodash. I went to the GitHub project for lodash and prepared to submit a bug report. Out of habit, I searched for existing issues. The result? [An issue that had been closed 10 days earlier](https://github.com/lodash/lodash/issues/1758). A fix had been committed, but a new release hadn't been tagged. Despite my pleading on the issue, a new release *still* hasn't been tagged. In my opinion, this is a critical bug. Object comparison is simply broken in lodash 4.0.0.
 
-A week with no 
+....
+
+In other words: It ain't fixed until it's deployed.
