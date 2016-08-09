@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+{% include head.html %}
+{% include twitter_card.html %}
+{% include og.html %}
+</head>
+<body>
+  <main>
+  {% include header.html %}
+  <div class="content-container">
+  <div class="container">
+    <br class="separator" />
+    <h3>
+      <a href="{{ page.url | split:"index.html" | first }}">{{ page.title }}</a>
+    </h3>
+    <hr />
+    <div class="post">
+      {{ content }}
+    </div>
+    <hr />
+  </div>
+  </div>
+  {% include footer.html %}
+  </main>
+  {% include ga.html %}
+</body>
+</html>
