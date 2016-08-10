@@ -6,7 +6,30 @@ iframe.hex_iframe {
 }
 </style>
 
-<iframe class="hex_iframe" src="/hex/404.html"></iframe>
-<iframe class="hex_iframe" src="/hex/401.html"></iframe>
-<iframe class="hex_iframe" src="/hex/503.html"></iframe>
-<iframe class="hex_iframe" src="/hex/500.html"></iframe>
+<div class="row">
+  <div class="col-xs-3">
+    <button class="btn btn-info" onclick="change('401');">401: Unauthorized</button>
+  </div>
+  <div class="col-xs-3">
+    <button class="btn btn-info" onclick="change('404');">404: Not found</button>
+  </div>
+  <div class="col-xs-3">
+    <button class="btn btn-info" onclick="change('500');">500: Internal Server Error</button>
+  </div>
+  <div class="col-xs-3">
+    <button class="btn btn-info" onclick="change('503');">503: Temporarily Unavailable</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <iframe id="hex_iframe" class="hex_iframe" src="/hex/401.html"></iframe>
+  </div>
+</div>
+
+<script type="text/javascript">
+"use strict";
+function change(code) {
+  var frame = document.getElementById("hex_iframe");
+  frame.src = "/hex/" + code + ".html";
+}
+</script>
