@@ -27,19 +27,28 @@ Another issue that had been plaguing our Atom package was random React-related c
 - [Floobits-term3: Uncaught TypeError: Expecting a function in instanceof check, but got #\<Collection\>](https://github.com/Floobits/atom-term3/issues/56)
 - [Floobits-term3: Uncaught TypeError: Cannot read property 'null' of undefined](https://github.com/Floobits/atom-term3/issues/63)
 
-I went gallivanting through the React code and managed to figure it out. React was starting up in production mode, then later switching to debug mode. React only initializes certain debugging data structures if it starts up in debug mode. Switching to debug mode caused it to attempt to access things that didn't exist, throwing errors. Oops.
+I went gallivanting through the React code and managed to figure it out. React was starting up in production mode, then later switching to debug mode. React only initializes certain debugging data structures if it starts up in debug mode. Starting in production and switching to debug mode caused it to attempt to access things that didn't exist. Oops.
 
-React chooses modes by checking `process.env.NODE_ENV`. If it's set to "production", it will run in production mode. Otherwise, it uses debug mode. So something in Atom was changing the `NODE_ENV` environment variable.
+React chooses modes by checking `process.env.NODE_ENV`. If it's set to "production", it will run in production mode. Otherwise, it uses debug mode. Atom initializes `NODE_ENV` to "production" in [src/initialize-application-window.coffee](https://github.com/atom/atom/blob/a5fdf3e18a512349e7efb91b3c297b1a2b91bf63/src/initialize-application-window.coffee#L20). Something must change it later.
+
+I finally tracked it down to to [src/environment-helpers.js](https://github.com/atom/atom/blob/a5fdf3e18a512349e7efb91b3c297b1a2b91bf63/src/environment-helpers.js#L75):
+
+{% highlight js hl_lines="6" linenos linenostart=70 %}
+// Fix for #11302 because `process.env` on Windows is a magic object that offers case-insensitive
+// environment variable matching. By always cloning to `process.env` we prevent breaking the
+// underlying functionality.
+function clone (to, from) {
+  for (var key in to) {
+    delete to[key]
+  }
+
+  Object.assign(to, from)
+}
+{% endhighlight %}
+
+Basically
+
+I created [an issue describing the problem](https://github.com/atom/atom/issues/12024), soon followed by [a pull request to fix it](https://github.com/atom/atom/pull/12028).
 
 
-https://github.com/atom/atom/blob/a5fdf3e18a512349e7efb91b3c297b1a2b91bf63/src/initialize-application-window.coffee#L20
-
-
-https://github.com/atom/atom/blob/a5fdf3e18a512349e7efb91b3c297b1a2b91bf63/src/environment-helpers.js#L75
-
-NODE_ENV
-https://github.com/atom/atom/issues/12024
-https://github.com/atom/atom/pull/12028
-
-
-startup time
+## Improving Startup Time
