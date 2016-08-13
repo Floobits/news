@@ -1,9 +1,9 @@
 ---
 date: '2016-08-02 18:49:23'
 layout: post
-slug: floobits-atom-fixing-bugs-improving-startup-time
+slug: floobits-atom-fixing-bugs
 published: true
-title: 'Floobits Atom: Fixing Bugs, Improving Startup Time'
+title: 'Floobits Atom: Fixing Bugs'
 authors:
   - ggreer
 categories:
@@ -31,7 +31,7 @@ I went gallivanting through the React code and managed to figure it out. React w
 
 React chooses modes by checking `process.env.NODE_ENV`. If it's set to "production", it will run in production mode. Otherwise, it uses debug mode. Atom initializes `NODE_ENV` to "production" in [src/initialize-application-window.coffee](https://github.com/atom/atom/blob/a5fdf3e18a512349e7efb91b3c297b1a2b91bf63/src/initialize-application-window.coffee#L20). Something must change it later.
 
-I finally tracked it down to to [src/environment-helpers.js](https://github.com/atom/atom/blob/a5fdf3e18a512349e7efb91b3c297b1a2b91bf63/src/environment-helpers.js#L75):
+I finally tracked it down to [src/environment-helpers.js](https://github.com/atom/atom/blob/a5fdf3e18a512349e7efb91b3c297b1a2b91bf63/src/environment-helpers.js#L75):
 
 {% highlight js hl_lines="6" linenos linenostart=70 %}
 // Fix for #11302 because `process.env` on Windows is a magic object that offers case-insensitive
@@ -46,9 +46,10 @@ function clone (to, from) {
 }
 {% endhighlight %}
 
-Basically
+This `clone()` function is called in several ways
 
 I created [an issue describing the problem](https://github.com/atom/atom/issues/12024), soon followed by [a pull request to fix it](https://github.com/atom/atom/pull/12028).
 
 
-## Improving Startup Time
+## Conclusion
+
