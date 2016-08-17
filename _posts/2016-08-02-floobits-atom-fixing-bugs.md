@@ -46,7 +46,7 @@ function clone (to, from) {
 }
 {% endhighlight %}
 
-This `clone()` function is called when running `atom` from the command line. If Atom is already running, it replaces the existing environment with the new
+This `clone()` function is called when running `atom` from the command line. If Atom is already running, it replaces the existing environment with the new one, which usually lacks `NODE_ENV`. Oops.
 
 I created [an issue describing the problem](https://github.com/atom/atom/issues/12024), soon followed by [a pull request to fix it](https://github.com/atom/atom/pull/12028).
 
